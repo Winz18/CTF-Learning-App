@@ -13,11 +13,15 @@ function ModuleScreen({navigation}: SectionProps): React.JSX.Element {
   const backToCourse = () => {
     navigation.goBack();
   };
+  const goToTest = () => {
+    navigation.navigate('QuizScreen');
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView>
         <View>
-          <ModuleHeader NewScr={backToCourse} />
+          <ModuleHeader goBack={backToCourse} goToTest={goToTest} />
           <ModuleContent />
         </View>
       </ScrollView>

@@ -14,6 +14,7 @@ import MainScreen from './MainScreen';
 import CourseScreen from './CourseScreen';
 import ModuleScreen from './ModuleScreen';
 import RankingScreen from './RankingScreen.tsx';
+import QuizScreen from './QuizScreen.tsx';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +28,7 @@ function App(): React.JSX.Element {
         <Stack.Screen name="Course" component={CourseScreen} />
         <Stack.Screen name="ModuleScreen" component={ModuleScreen} />
         <Stack.Screen name="RankingScreen" component={RankingScreen} />
+        <Stack.Screen name="QuizScreen" component={QuizScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

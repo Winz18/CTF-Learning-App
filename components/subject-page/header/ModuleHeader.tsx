@@ -10,10 +10,11 @@ import {
 } from 'react-native';
 
 type SectionProps = PropsWithChildren<{
-  NewScr: () => void;
+  goBack: () => void;
+  goToTest: () => void;
 }>;
 
-function ModuleHeader({NewScr: Switching}: SectionProps): React.JSX.Element {
+function ModuleHeader({goBack, goToTest}: SectionProps): React.JSX.Element {
   return (
     <ImageBackground
       style={styles.container}
@@ -21,7 +22,7 @@ function ModuleHeader({NewScr: Switching}: SectionProps): React.JSX.Element {
       source={require('./img/OIP2.jpg')}>
       {/* Nút back */}
       <View style={styles.navigationButton}>
-        <TouchableOpacity onPress={Switching}>
+        <TouchableOpacity onPress={goBack}>
           <Image style={styles.img} source={require('./img/left-arrow.png')} />
         </TouchableOpacity>
       </View>
@@ -30,16 +31,18 @@ function ModuleHeader({NewScr: Switching}: SectionProps): React.JSX.Element {
         Server-side Vulnerabilities Overview
       </Text>
       <View style={styles.navigationButton}>
-        <TouchableOpacity>
+        {/* Nút test, dẫn đến bài kiểm tra trắc nghiệm */}
+        <TouchableOpacity onPress={goToTest}>
           <Image
             style={styles.btnTestAndDone}
             source={require('./img/test.png')}
           />
         </TouchableOpacity>
+        {/* Nút done, ấn vào đồng nghĩa là đã học xong module này */}
         <TouchableOpacity>
           <Image
             style={styles.btnTestAndDone}
-            source={require('./img/test.png')}
+            source={require('./img/verified.png')}
           />
         </TouchableOpacity>
       </View>
@@ -82,8 +85,8 @@ const styles = StyleSheet.create({
   },
 
   btnTestAndDone: {
-    width: 40,
-    height: 40,
+    width: 50,
+    height: 50,
     marginLeft: 30,
   },
 });
