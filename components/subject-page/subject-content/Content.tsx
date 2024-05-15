@@ -6,7 +6,7 @@ type SectionProps = PropsWithChildren<{
   number: string;
   text: {
     time: string;
-    lessonName: string;
+    moduleName: string;
   };
   NewScr: () => void;
 }>;
@@ -30,7 +30,7 @@ function Content({
           <Text style={{color: 'gray'}}>{text.time}</Text>
           {/* Tên của modules */}
           <Text style={{fontSize: 16, fontWeight: '700', color: 'black'}}>
-            {text.lessonName}
+            {text.moduleName}
           </Text>
         </View>
         {/* Nút play của modules, ấn vào sẽ chuyển sang màn hình nội dung chi tiết */}

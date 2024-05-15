@@ -15,31 +15,31 @@ function CourseContents({navigation}: SectionProps): React.JSX.Element {
   return (
     <View style={styles.container}>
       <View style={{marginVertical: 16}}>
-        <Text style={styles.headerTxt}>Course's modules</Text>
+        <Text style={styles.headerTxt}>Danh sách các modules</Text>
       </View>
-      {/* Sau khi lấy được các module từ course thì nên dùng vòng for để tạo các <Content>{số thứ tự}, {thời gian đọc}, {tên module}<Content>
-            tương ứng với từng module, tạm thời lấy ví dụ là các module của course Web Security  */}
+      {/* Sau khi lấy được các modules từ course trong database thì nên đổ vào 1 const state array2D [[number, time, moduleName]]
+      để chứa và dùng vòng for để tạo các <Content>...<Content> tương ứng với từng module */}
       <Content
         number={'01'}
         text={{
           time: 'Thời gian đọc, VD: 30m reading',
-          lessonName: 'Tên Module 01, ví dụ: SQL Injection',
+          moduleName: 'Tên Module 01, ví dụ: SQL Injection',
         }}
         NewScr={navigateToModuleScreen}
       />
       <Content
         number={'02'}
-        text={{time: '1h reading', lessonName: 'Tên Module 02'}}
+        text={{time: '1h reading', moduleName: 'Tên Module 02'}}
         NewScr={navigateToModuleScreen}
       />
       <Content
         number={'03'}
-        text={{time: '2h reading', lessonName: 'Tên Module 03'}}
+        text={{time: '2h reading', moduleName: 'Tên Module 03'}}
         NewScr={navigateToModuleScreen}
       />
       <Content
         number={'04'}
-        text={{time: '1,5h reading', lessonName: 'Tên Module 04'}}
+        text={{time: '1,5h reading', moduleName: 'Tên Module 04'}}
         NewScr={navigateToModuleScreen}
       />
       {/* Thêm vào để có khoảng trống phía dưới */}

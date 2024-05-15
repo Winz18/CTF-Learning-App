@@ -1,13 +1,19 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
 function CourseFooter(): React.JSX.Element {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [finishedModules, setFinishedModules] = useState<number>(0);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [totalModules, setTotalModules] = useState<number>(0);
+
   return (
     <View style={styles.container}>
       <View style={styles.imgWrapper}>
-        {/* Hiển thị số lượng module đã hoàn thành trong mỗi chủ đề,
-          ví dụ: 5/10 (5, 10 là chiếu theo data fetch về, hãy tạo 2 biến state để lưu trạng thái) */}
-        <Text style={styles.text}>Progess: 5/10</Text>
+        {/* Hiển thị số lượng module đã hoàn thành trong mỗi chủ đề */}
+        <Text style={styles.text}>
+          Hoàn thành: {finishedModules}/{totalModules}
+        </Text>
       </View>
     </View>
   );
@@ -22,22 +28,19 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     alignItems: 'center',
-    justifyContent: 'space-between',
-    borderRadius: 10,
+    justifyContent: 'center',
   },
 
   imgWrapper: {
     alignItems: 'center',
     marginHorizontal: 15,
+    justifyContent: 'center',
   },
 
   text: {
-    fontSize: 16,
-    color: 'black',
+    fontSize: 24,
+    color: 'green',
     fontWeight: '700',
-    alignContent: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
     alignSelf: 'center',
   },
 });

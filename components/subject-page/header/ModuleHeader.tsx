@@ -32,18 +32,9 @@ function ModuleHeader({goBack, goToTest}: SectionProps): React.JSX.Element {
       </Text>
       <View style={styles.navigationButton}>
         {/* Nút test, dẫn đến bài kiểm tra trắc nghiệm */}
+        <Text style={{fontSize: 18, color: 'white'}}>{'\nBài kiểm tra'}</Text>
         <TouchableOpacity onPress={goToTest}>
-          <Image
-            style={styles.btnTestAndDone}
-            source={require('./img/test.png')}
-          />
-        </TouchableOpacity>
-        {/* Nút done, ấn vào đồng nghĩa là đã học xong module này */}
-        <TouchableOpacity>
-          <Image
-            style={styles.btnTestAndDone}
-            source={require('./img/verified.png')}
-          />
+          <Image style={styles.btnTest} source={require('./img/test.png')} />
         </TouchableOpacity>
       </View>
     </ImageBackground>
@@ -84,10 +75,10 @@ const styles = StyleSheet.create({
     color: 'lightgray',
   },
 
-  btnTestAndDone: {
+  btnTest: {
     width: 50,
     height: 50,
-    marginLeft: 30,
+    marginLeft: 10,
   },
 });
 

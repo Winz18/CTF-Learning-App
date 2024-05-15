@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   Image,
@@ -14,6 +14,15 @@ type SectionProps = PropsWithChildren<{
 }>;
 
 function CourseHeader({NewScr: Switching}: SectionProps): React.JSX.Element {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [moduleName, setModuleName] = useState<string>("Course's name");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [stars, setStars] = useState<number>(0);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [views, setViews] = useState<number>(0);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [difficulty, setDifficulty] = useState<string>('Easy');
+
   return (
     <ImageBackground
       style={styles.container}
@@ -28,10 +37,10 @@ function CourseHeader({NewScr: Switching}: SectionProps): React.JSX.Element {
 
       <View style={styles.tag}>
         {/* Độ khó (thay đổi theo data lấy về) */}
-        <Text style={{fontWeight: '700', color: 'black'}}>Medium</Text>
+        <Text style={{fontWeight: '700', color: 'black'}}>{difficulty}</Text>
       </View>
       {/* Tên course (thay đổi theo data lấy về) */}
-      <Text style={styles.nameOfCourseTxt}>Tên Course</Text>
+      <Text style={styles.nameOfCourseTxt}>{moduleName}</Text>
       <View style={{flexDirection: 'row'}}>
         <View
           style={{
@@ -43,10 +52,9 @@ function CourseHeader({NewScr: Switching}: SectionProps): React.JSX.Element {
           {/* Số lượt xem và số sao đánh giá (thay đổi theo data lấy về) */}
           <Image style={styles.img} source={require('./img/OIP.jpg')} />
           <Text style={{color: 'lightgreen', fontSize: 16, fontWeight: '700'}}>
-            10K
+            {views}
           </Text>
         </View>
-
         <View
           style={{
             flexDirection: 'row',
@@ -59,7 +67,7 @@ function CourseHeader({NewScr: Switching}: SectionProps): React.JSX.Element {
             source={require('./img/iconfinder_gold_star_1790157.png')}
           />
           <Text style={{color: 'lightgreen', fontSize: 16, fontWeight: '700'}}>
-            3.5K
+            {stars}
           </Text>
         </View>
       </View>

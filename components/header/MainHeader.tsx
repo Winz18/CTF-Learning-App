@@ -17,11 +17,14 @@ type SectionProps = PropsWithChildren<{
 function MainHeader({navigation}: SectionProps): React.JSX.Element {
   const [modalVisible, setModalVisible] = useState(false);
 
+  // Xử lý logout ở đây
+  // Ví dụ: đăng xuất người dùng, xóa token, vv.
   const handleLogout = () => {
-    // Xử lý logout ở đây
-    // Ví dụ: đăng xuất người dùng, xóa token, vv.
+    setModalVisible(false);
+    navigation.navigate('LoginScreen');
   };
 
+  // Show help message
   const handleHelp = () => {
     Alert.alert(
       'Version: 1.0.0',
@@ -29,13 +32,13 @@ function MainHeader({navigation}: SectionProps): React.JSX.Element {
     );
   };
 
+  // Show email, update mail, change password
   const handleProfile = () => {
-    //Xem thông tin cá nhân
-    //Cập nhật thông tin cá nhân
-    //Đổi mật khẩu
-    //Chuyển sang trang xem profile
+    setModalVisible(false);
+    navigation.navigate('ProfileScreen');
   };
 
+  // Show scoreboard
   const handleRanking = () => {
     setModalVisible(false);
     navigation.navigate('RankingScreen');
