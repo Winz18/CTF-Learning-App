@@ -3,12 +3,15 @@ import {View, Text, TextInput, Button, StyleSheet, Alert} from 'react-native';
 import type {PropsWithChildren} from 'react';
 import {NavigationProp} from '@react-navigation/native';
 import axios from 'axios';
+import {useAuth} from './AuthProvider.tsx';
 
 type SectionProps = PropsWithChildren<{
   navigation: NavigationProp<any, any>;
 }>;
 
 function LoginScreen({navigation}: SectionProps): React.JSX.Element {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const {user, updateUser, signOut} = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -18,10 +21,10 @@ function LoginScreen({navigation}: SectionProps): React.JSX.Element {
       .post('http://10.10.0.249:3000/auth/signin', {email, password})
       .then(response => {
         Alert.alert('Success', 'Login successful');
-        // Lưu token và chuyển hướng tới màn hình khác
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const token = response.data.token;
-        console.log(token);
-        // Lưu token vào AsyncStorage hoặc Context
+        const info = response.data.info;
+        updateUser(info);
         navigation.navigate('Home');
       })
       .catch(error => {

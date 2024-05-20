@@ -15,37 +15,43 @@ function ProfileScreen({navigation}: SectionProps): React.JSX.Element {
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
 
-  const handleUpdateEmail = () => {
-    axios
-      .put(`http://10.10.0.249:3000/users/${user?.id}/email`, {email})
+  const handleUpdateEmail = async () => {
+    if (!user) {
+      Alert.alert('Error', 'User not found');
+      return;
+    }
+    try {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      .then(response => {
-        // @ts-ignore
-        updateUser({...user, email});
-        Alert.alert('Success', 'Email updated successfully');
-      })
-      .catch(error => {
-        console.error(error);
-        Alert.alert('Error', 'Failed to update email');
-      });
+      const response = await axios.put(
+        `http://10.10.0.249:3000/auth/users/${user.id}/email`,
+        {email},
+      );
+      updateUser({...user, email});
+      Alert.alert('Success', 'Email updated successfully');
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Error', 'Failed to update email');
+    }
   };
 
-  const handleChangePassword = () => {
-    axios
-      .put(`http://10.10.0.249:3000/users/${user?.id}/password`, {
-        password,
-        newPassword,
-      })
+  const handleChangePassword = async () => {
+    if (!user) {
+      Alert.alert('Error', 'User not found');
+      return;
+    }
+    try {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      .then(response => {
-        Alert.alert('Success', 'Password updated successfully');
-        setPassword('');
-        setNewPassword('');
-      })
-      .catch(error => {
-        console.error(error);
-        Alert.alert('Error', 'Failed to update password');
-      });
+      const response = await axios.put(
+        `http://10.10.0.249:3000/auth/users/${user.id}/password`,
+        {password, newPassword},
+      );
+      Alert.alert('Success', 'Password updated successfully');
+      setPassword('');
+      setNewPassword('');
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Error', 'Failed to update password');
+    }
   };
 
   const goback = () => {
@@ -55,6 +61,7 @@ function ProfileScreen({navigation}: SectionProps): React.JSX.Element {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Profile</Text>
+      <Text>{'\n'}</Text>
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -62,7 +69,10 @@ function ProfileScreen({navigation}: SectionProps): React.JSX.Element {
         onChangeText={setEmail}
         keyboardType="email-address"
       />
+      <Text>{'\n'}</Text>
       <Button title="Update Email" onPress={handleUpdateEmail} />
+      <Text>{'\n'}</Text>
+      <Text>{'\n'}</Text>
       <TextInput
         style={styles.input}
         placeholder="Current Password"
@@ -77,7 +87,9 @@ function ProfileScreen({navigation}: SectionProps): React.JSX.Element {
         onChangeText={setNewPassword}
         secureTextEntry
       />
+      <Text>{'\n'}</Text>
       <Button title="Change Password" onPress={handleChangePassword} />
+      <Text>{'\n'}</Text>
       <Button title="Back To Home" onPress={goback} />
     </View>
   );
@@ -91,8 +103,9 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   title: {
-    fontSize: 24,
+    fontSize: 30,
     marginBottom: 20,
+    fontWeight: 'bold',
   },
   input: {
     width: '100%',
