@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-import {View, Text, TextInput, Button, StyleSheet} from 'react-native';
+import {View, Text, TextInput, Button, StyleSheet, Alert} from 'react-native';
 import type {PropsWithChildren} from 'react';
 import {NavigationProp} from '@react-navigation/native';
+import axios from 'axios';
 
 type SectionProps = PropsWithChildren<{
   navigation: NavigationProp<any, any>;
@@ -12,8 +13,21 @@ function LoginScreen({navigation}: SectionProps): React.JSX.Element {
   const [password, setPassword] = useState('');
 
   // Xử lý logic đăng nhập ở đây
-  const handleLogin = () => {
-    navigation.navigate('Home');
+  const handleSignIn = () => {
+    axios
+      .post('http://10.10.0.249:3000/auth/signin', {email, password})
+      .then(response => {
+        Alert.alert('Success', 'Login successful');
+        // Lưu token và chuyển hướng tới màn hình khác
+        const token = response.data.token;
+        console.log(token);
+        // Lưu token vào AsyncStorage hoặc Context
+        navigation.navigate('Home');
+      })
+      .catch(error => {
+        console.error(error);
+        Alert.alert('Error', 'Login failed');
+      });
   };
 
   return (
@@ -33,7 +47,7 @@ function LoginScreen({navigation}: SectionProps): React.JSX.Element {
         secureTextEntry
       />
       <Text>{'\n'}</Text>
-      <Button title="Login" onPress={handleLogin} />
+      <Button title="Login" onPress={handleSignIn} />
       <Text>{'\n'}</Text>
       <Button
         title="Sign Up"

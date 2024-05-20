@@ -28,7 +28,7 @@ function CourseCategories({
         <TouchableOpacity onPress={Switching}>
           <CourseBackground
             title="Web Security"
-            numberOfCourse="số lượng modules"
+            numberOfModules="số lượng modules"
             typeCourse={images.web}
           />
         </TouchableOpacity>
@@ -36,7 +36,7 @@ function CourseCategories({
         <TouchableOpacity onPress={Switching}>
           <CourseBackground
             title="Forensics"
-            numberOfCourse="số lượng modules"
+            numberOfModules="số lượng modules"
             typeCourse={images.foren}
           />
         </TouchableOpacity>
@@ -44,7 +44,7 @@ function CourseCategories({
         <TouchableOpacity onPress={Switching}>
           <CourseBackground
             title="Reversing"
-            numberOfCourse="số lượng modules"
+            numberOfModules="số lượng modules"
             typeCourse={images.reverse}
           />
         </TouchableOpacity>
@@ -52,7 +52,7 @@ function CourseCategories({
         <TouchableOpacity onPress={Switching}>
           <CourseBackground
             title="Pwnable"
-            numberOfCourse="số lượng modules"
+            numberOfModules="số lượng modules"
             typeCourse={images.pwn}
           />
         </TouchableOpacity>
@@ -60,7 +60,7 @@ function CourseCategories({
         <TouchableOpacity onPress={Switching}>
           <CourseBackground
             title="Crypto"
-            numberOfCourse="số lượng modules"
+            numberOfModules="số lượng modules"
             typeCourse={images.crypto}
           />
         </TouchableOpacity>
@@ -68,7 +68,7 @@ function CourseCategories({
         <TouchableOpacity onPress={Switching}>
           <CourseBackground
             title="Others"
-            numberOfCourse="số lượng modules"
+            numberOfModules="số lượng modules"
             typeCourse={images.others}
           />
         </TouchableOpacity>

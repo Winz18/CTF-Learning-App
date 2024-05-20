@@ -4,13 +4,13 @@ import {ImageBackground, StyleSheet, Text} from 'react-native';
 
 type SectionProps = PropsWithChildren<{
   title: string;
-  numberOfCourse: string;
+  numberOfModules: string;
   typeCourse: any;
 }>;
 
 function CourseBackground({
   title,
-  numberOfCourse,
+  numberOfModules,
   typeCourse,
 }: SectionProps): React.JSX.Element {
   return (
@@ -20,7 +20,7 @@ function CourseBackground({
       source={typeCourse}
       resizeMode="cover">
       <Text style={styles.text1}>{title}</Text>
-      <Text style={styles.text2}>{numberOfCourse}</Text>
+      <Text style={styles.text2}>{numberOfModules}</Text>
     </ImageBackground>
   );
 }

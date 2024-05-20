@@ -1,37 +1,55 @@
-import React, {useState} from 'react';
+import React, { type PropsWithChildren, useState } from "react";
 import {View, Text, TextInput, Button, StyleSheet, Alert} from 'react-native';
-import type {PropsWithChildren} from 'react';
+import {useAuth} from './AuthProvider';
+import axios from 'axios';
 import {NavigationProp} from '@react-navigation/native';
 
 type SectionProps = PropsWithChildren<{
   navigation: NavigationProp<any, any>;
 }>;
 
-function ProfileScreen({navigation}: SectionProps): React.JSX.Element {
-  const [email, setEmail] = useState('(current email of user)'); // email hiện tại
-  const [currentPassword, setCurrentPassword] = useState('');
+const ProfileScreen: React.FC = ({navigation}: SectionProps) => {
+  const {user, updateUser, signOut} = useAuth();
+  const [email, setEmail] = useState(user?.email || '');
+  const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleUpdateEmail = () => {
-    // Thêm logic để cập nhật email
-    Alert.alert('Email Updated', `Your email has been updated to ${email}`);
+    axios
+      .put(`http://10.10.0.249:3000/users/${user?.id}/email`, {email})
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      .then(response => {
+        // @ts-ignore
+        updateUser({...user, email});
+        Alert.alert('Success', 'Email updated successfully');
+      })
+      .catch(error => {
+        console.error(error);
+        Alert.alert('Error', 'Failed to update email');
+      });
   };
 
   const handleChangePassword = () => {
-    if (newPassword !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match');
-      return;
-    }
-    // Thêm logic để thay đổi mật khẩu
-    Alert.alert('Password Changed', 'Your password has been updated');
+    axios
+      .put(`http://10.10.0.249:3000/users/${user?.id}/password`, {
+        password,
+        newPassword,
+      })
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      .then(response => {
+        Alert.alert('Success', 'Password updated successfully');
+        setPassword('');
+        setNewPassword('');
+      })
+      .catch(error => {
+        console.error(error);
+        Alert.alert('Error', 'Failed to update password');
+      });
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Profile</Text>
-
-      <Text style={styles.label}>Email</Text>
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -40,13 +58,11 @@ function ProfileScreen({navigation}: SectionProps): React.JSX.Element {
         keyboardType="email-address"
       />
       <Button title="Update Email" onPress={handleUpdateEmail} />
-
-      <Text style={styles.label}>Change Password</Text>
       <TextInput
         style={styles.input}
         placeholder="Current Password"
-        value={currentPassword}
-        onChangeText={setCurrentPassword}
+        value={password}
+        onChangeText={setPassword}
         secureTextEntry
       />
       <TextInput
@@ -56,22 +72,11 @@ function ProfileScreen({navigation}: SectionProps): React.JSX.Element {
         onChangeText={setNewPassword}
         secureTextEntry
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Confirm New Password"
-        value={confirmPassword}
-        onChangeText={setConfirmPassword}
-        secureTextEntry
-      />
       <Button title="Change Password" onPress={handleChangePassword} />
-      <Text>{'\n'}</Text>
-      <Button
-        title="Back to Home"
-        onPress={() => navigation.navigate('Home')}
-      />
+      <Button title="Back To Home" onPress={navigation.navigate('Home')} />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -79,25 +84,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
-    backgroundColor: '#f5f5f5',
   },
   title: {
-    fontSize: 30,
+    fontSize: 24,
     marginBottom: 20,
-    fontWeight: 'bold',
-  },
-  label: {
-    fontSize: 16,
-    marginTop: 20,
-    alignSelf: 'flex-start',
-    fontWeight: 'bold',
   },
   input: {
     width: '100%',
     padding: 10,
     marginVertical: 10,
     borderWidth: 1,
-    borderColor: '#cccccc',
+    borderColor: '#ccc',
     borderRadius: 8,
   },
 });
