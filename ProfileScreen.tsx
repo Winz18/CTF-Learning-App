@@ -1,4 +1,4 @@
-import React, { type PropsWithChildren, useState } from "react";
+import React, {type PropsWithChildren, useState} from 'react';
 import {View, Text, TextInput, Button, StyleSheet, Alert} from 'react-native';
 import {useAuth} from './AuthProvider';
 import axios from 'axios';
@@ -8,7 +8,8 @@ type SectionProps = PropsWithChildren<{
   navigation: NavigationProp<any, any>;
 }>;
 
-const ProfileScreen: React.FC = ({navigation}: SectionProps) => {
+function ProfileScreen({navigation}: SectionProps): React.JSX.Element {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const {user, updateUser, signOut} = useAuth();
   const [email, setEmail] = useState(user?.email || '');
   const [password, setPassword] = useState('');
@@ -47,6 +48,10 @@ const ProfileScreen: React.FC = ({navigation}: SectionProps) => {
       });
   };
 
+  const goback = () => {
+    navigation.goBack();
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Profile</Text>
@@ -73,10 +78,10 @@ const ProfileScreen: React.FC = ({navigation}: SectionProps) => {
         secureTextEntry
       />
       <Button title="Change Password" onPress={handleChangePassword} />
-      <Button title="Back To Home" onPress={navigation.navigate('Home')} />
+      <Button title="Back To Home" onPress={goback} />
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
