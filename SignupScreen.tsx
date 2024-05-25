@@ -6,9 +6,11 @@ import {
   Button,
   StyleSheet,
   DevSettings,
+  Alert,
 } from 'react-native';
 import type {PropsWithChildren} from 'react';
 import {NavigationProp} from '@react-navigation/native';
+import axios from 'axios';
 
 type SectionProps = PropsWithChildren<{
   navigation: NavigationProp<any, any>;
@@ -25,9 +27,18 @@ function SignUpScreen({navigation}: SectionProps): React.JSX.Element {
     DevSettings.reload();
   };
 
-  const handleSignup = () => {
-    // Xử lý logic tạo tài khoản ở đây
-    navigation.navigate('Home');
+  const handleSignUp = () => {
+    axios
+      .post('http://10.10.0.249:3000/auth/signup', {email, password})
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      .then(response => {
+        Alert.alert('Success', 'User registered successfully');
+        navigation.navigate('Home');
+      })
+      .catch(error => {
+        console.error(error);
+        Alert.alert('Error', 'Registration failed');
+      });
   };
 
   return (
@@ -54,7 +65,7 @@ function SignUpScreen({navigation}: SectionProps): React.JSX.Element {
         secureTextEntry
       />
       <Text>{'\n'}</Text>
-      <Button title="Sign Up" onPress={handleSignup} />
+      <Button title="Sign Up" onPress={handleSignUp} />
       <Text>{'\n'}</Text>
       <Button title="Back to login" onPress={reloadApp} />
     </View>
