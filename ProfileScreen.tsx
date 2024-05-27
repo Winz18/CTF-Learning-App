@@ -23,10 +23,10 @@ function ProfileScreen({navigation}: SectionProps): React.JSX.Element {
     try {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const response = await axios.put(
-        `http://10.10.0.249:3000/auth/users/${user.id}/email`,
+        `http://192.168.1.64:3000/auth/users/${user.id}/email`,
         {email},
       );
-      updateUser({...user, email});
+      updateUser({ ...user, email });
       Alert.alert('Success', 'Email updated successfully');
     } catch (error) {
       console.error(error);
