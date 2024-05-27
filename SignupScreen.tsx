@@ -22,6 +22,7 @@ function SignUpScreen({ navigation }: SectionProps): React.JSX.Element {
   const [password2, setPassword2] = useState('');
 
   const handleSignUp = () => {
+    console.log(username, email, password, password2);
     axios
       .post('http://10.0.2.2:8000/api/auth/register/', {
         username,
@@ -31,12 +32,11 @@ function SignUpScreen({ navigation }: SectionProps): React.JSX.Element {
       })
       .then(response => {
         Alert.alert('Success', 'User registered successfully');
-        navigation.navigate('Login'); // Điều hướng đến màn hình đăng nhập
+        navigation.navigate('LoginScreen'); // Điều hướng đến màn hình đăng nhập
       })
       .catch(error => {
         console.error(error);
-        const errorMsg = error.response?.data || 'Registration failed';
-        Alert.alert('Error', errorMsg);
+        Alert.alert('Error', 'An error occurred. Please try again.');
       });
   };
 

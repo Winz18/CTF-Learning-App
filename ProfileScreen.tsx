@@ -1,120 +1,130 @@
-import React, {type PropsWithChildren, useState} from 'react';
-import {View, Text, TextInput, Button, StyleSheet, Alert} from 'react-native';
-import {useAuth} from './AuthProvider';
-import axios from 'axios';
-import {NavigationProp} from '@react-navigation/native';
+import React, { useState } from "react";
+import { Alert, StyleSheet, View } from "react-native";
+import { useAuth } from "./AuthProvider";
+import axios from "axios";
+import { NavigationProp } from "@react-navigation/native";
+import { Appbar, Avatar, Button, Card, Subheading, TextInput, Title } from "react-native-paper";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-type SectionProps = PropsWithChildren<{
+type SectionProps = {
   navigation: NavigationProp<any, any>;
-}>;
+};
 
-function ProfileScreen({navigation}: SectionProps): React.JSX.Element {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const {user, updateUser, signOut} = useAuth();
-  const [email, setEmail] = useState(user?.email || '');
-  const [password, setPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
+function ProfileScreen({ navigation }: SectionProps): React.JSX.Element {
+  const { user, updateUser } = useAuth();
+  const [email, setEmail] = useState(user?.email || "");
+  const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
 
   const handleUpdateEmail = async () => {
     if (!user) {
-      Alert.alert('Error', 'User not found');
+      Alert.alert("Error", "User not found");
       return;
     }
     try {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const response = await axios.put(
-        `http://192.168.1.64:3000/auth/users/${user.id}/email`,
-        {email},
+      await axios.put(
+        `http://10.0.2.2:8000/api/auth/users/${user.id}/email`,
+        { email }
       );
       updateUser({ ...user, email });
-      Alert.alert('Success', 'Email updated successfully');
+      Alert.alert("Success", "Email updated successfully");
     } catch (error) {
       console.error(error);
-      Alert.alert('Error', 'Failed to update email');
+      Alert.alert("Error", "Failed to update email");
     }
   };
 
   const handleChangePassword = async () => {
     if (!user) {
-      Alert.alert('Error', 'User not found');
+      Alert.alert("Error", "User not found");
       return;
     }
     try {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const response = await axios.put(
-        `http://10.10.0.249:3000/auth/users/${user.id}/password`,
-        {password, newPassword},
+      await axios.put(
+        `http://10.0.2.2:8000/api/auth/users/${user.id}/password`,
+        { password, newPassword }
       );
-      Alert.alert('Success', 'Password updated successfully');
-      setPassword('');
-      setNewPassword('');
+      Alert.alert("Success", "Password updated successfully");
+      setPassword("");
+      setNewPassword("");
     } catch (error) {
       console.error(error);
-      Alert.alert('Error', 'Failed to update password');
+      Alert.alert("Error", "Failed to update password");
     }
   };
 
-  const goback = () => {
+  const goBack = () => {
     navigation.goBack();
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Profile</Text>
-      <Text>{'\n'}</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-      />
-      <Text>{'\n'}</Text>
-      <Button title="Update Email" onPress={handleUpdateEmail} />
-      <Text>{'\n'}</Text>
-      <Text>{'\n'}</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Current Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="New Password"
-        value={newPassword}
-        onChangeText={setNewPassword}
-        secureTextEntry
-      />
-      <Text>{'\n'}</Text>
-      <Button title="Change Password" onPress={handleChangePassword} />
-      <Text>{'\n'}</Text>
-      <Button title="Back To Home" onPress={goback} />
+      <Appbar.Header>
+        <Appbar.BackAction onPress={goBack} />
+        <Appbar.Content title="Profile" />
+      </Appbar.Header>
+      <Card style={styles.card}>
+        <Card.Title
+          title={user?.username}
+          subtitle={user?.email}
+          left={(props) => <Avatar.Icon {...props} icon="account" />}
+        />
+        <Card.Content>
+          <Title>Update Profile</Title>
+          <TextInput
+            label="Email"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            style={styles.input}
+          />
+          <Button mode="contained" onPress={handleUpdateEmail} style={styles.button}>
+            Update Email
+          </Button>
+          <Subheading>Change Password</Subheading>
+          <TextInput
+            label="Current Password"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+            style={styles.input}
+          />
+          <TextInput
+            label="New Password"
+            value={newPassword}
+            onChangeText={setNewPassword}
+            secureTextEntry
+            style={styles.input}
+          />
+          <Button mode="contained" onPress={handleChangePassword} style={styles.button}>
+            Change Password
+          </Button>
+        </Card.Content>
+      </Card>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 16,
+    backgroundColor: "#f5f5f5"
+  },
+  card: {
+    margin: 16,
+    padding: 16
+  },
+  input: {
+    marginVertical: 10
+  },
+  button: {
+    marginVertical: 10
   },
   title: {
     fontSize: 30,
     marginBottom: 20,
-    fontWeight: 'bold',
-  },
-  input: {
-    width: '100%',
-    padding: 10,
-    marginVertical: 10,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-  },
+    fontWeight: "bold"
+  }
 });
 
 export default ProfileScreen;

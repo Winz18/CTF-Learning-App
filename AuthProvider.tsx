@@ -5,7 +5,7 @@ interface AuthContextProps {
   user: User | null;
   signIn: (token: string, userData: User) => Promise<void>;
   signOut: () => Promise<void>;
-  updateUser: (userData: Partial<User>) => void;
+  updateUser: (userData: User) => void;
 }
 
 interface User {
@@ -42,8 +42,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const updateUser = (userData: Partial<User>) => {
-    setUser(prevUser => (prevUser ? { ...prevUser, ...userData } : null));
+  const updateUser = (userData: User) => {
+    setUser(userData);
   };
 
   return (
