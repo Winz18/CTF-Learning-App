@@ -1,54 +1,60 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
-  View,
   Text,
   TextInput,
   Button,
   StyleSheet,
-  DevSettings,
   Alert,
+  ScrollView,
 } from 'react-native';
-import type {PropsWithChildren} from 'react';
-import {NavigationProp} from '@react-navigation/native';
+import type { PropsWithChildren } from 'react';
+import { NavigationProp } from '@react-navigation/native';
 import axios from 'axios';
 
 type SectionProps = PropsWithChildren<{
   navigation: NavigationProp<any, any>;
 }>;
 
-function SignUpScreen({navigation}: SectionProps): React.JSX.Element {
+function SignUpScreen({ navigation }: SectionProps): React.JSX.Element {
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-
-  // Do không dùng được navigation.push nên reload app cho nút back to login chạy được
-  // (khi load app thì mặc định là chạy login screen)
-  const reloadApp = () => {
-    DevSettings.reload();
-  };
+  const [password2, setPassword2] = useState('');
 
   const handleSignUp = () => {
     axios
-      .post('http://10.10.0.249:3000/auth/signup', {email, password})
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      .post('http://10.0.2.2:8000/api/auth/register/', {
+        username,
+        email,
+        password,
+        password2,
+      })
       .then(response => {
         Alert.alert('Success', 'User registered successfully');
-        navigation.navigate('Home');
+        navigation.navigate('Login'); // Điều hướng đến màn hình đăng nhập
       })
       .catch(error => {
         console.error(error);
-        Alert.alert('Error', 'Registration failed');
+        const errorMsg = error.response?.data || 'Registration failed';
+        Alert.alert('Error', errorMsg);
       });
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Sign Up</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Username"
+        value={username}
+        onChangeText={setUsername}
+      />
       <TextInput
         style={styles.input}
         placeholder="Email"
         value={email}
         onChangeText={setEmail}
+        keyboardType="email-address"
       />
       <TextInput
         style={styles.input}
@@ -60,21 +66,20 @@ function SignUpScreen({navigation}: SectionProps): React.JSX.Element {
       <TextInput
         style={styles.input}
         placeholder="Confirm Password"
-        value={confirmPassword}
-        onChangeText={setConfirmPassword}
+        value={password2}
+        onChangeText={setPassword2}
         secureTextEntry
       />
-      <Text>{'\n'}</Text>
       <Button title="Sign Up" onPress={handleSignUp} />
       <Text>{'\n'}</Text>
-      <Button title="Back to login" onPress={reloadApp} />
-    </View>
+      <Button title="Back to login" onPress={() => navigation.navigate('LoginScreen')} />
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 16,

@@ -1,16 +1,18 @@
-import React, {createContext, useState, useContext, ReactNode} from 'react';
+import React, { createContext, useState, useContext, ReactNode } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface AuthContextProps {
   user: User | null;
   signIn: (token: string, userData: User) => Promise<void>;
   signOut: () => Promise<void>;
-  updateUser: (userData: User) => void;
+  updateUser: (userData: Partial<User>) => void;
 }
 
 interface User {
   id: number;
   email: string;
+  username: string;
+  token: string;
 }
 
 interface AuthProviderProps {
@@ -19,7 +21,7 @@ interface AuthProviderProps {
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
-export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
 
   const signIn = async (token: string, userData: User) => {
@@ -40,12 +42,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
     }
   };
 
-  const updateUser = (userData: User) => {
-    setUser(userData);
+  const updateUser = (userData: Partial<User>) => {
+    setUser(prevUser => (prevUser ? { ...prevUser, ...userData } : null));
   };
 
   return (
-    <AuthContext.Provider value={{user, signIn, signOut, updateUser}}>
+    <AuthContext.Provider value={{ user, signIn, signOut, updateUser }}>
       {children}
     </AuthContext.Provider>
   );

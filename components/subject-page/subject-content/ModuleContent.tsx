@@ -1,66 +1,73 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View, ScrollView, Alert} from 'react-native';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { View, Text, FlatList, StyleSheet, ActivityIndicator } from "react-native";
+
+interface BlogPost {
+  id: number;
+  title: string;
+  content: string;
+}
 
 function ModuleContent(): React.JSX.Element {
-  {
-    /*Đây là trang hiển thị nội dung chi tiết của từng module, data fetch từ server*/
-  }
-  const [content, setContent] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(true);
+  const [data, setData] = useState<BlogPost[]>([]);
 
   useEffect(() => {
-    const fetchContent = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch(
-          'https://en.wikipedia.org/wiki/World_Wide_Web',
-        );
-        const text = await response.text();
-
-        if (text) {
-          setContent(text);
-        }
+        const response = await axios.get("http://google.com");
+        setData(response.data);
+        setLoading(false);
       } catch (error) {
-        console.error('Error fetching content:', error);
-        {
-          /* Nổi thông báo nếu có lỗi phát sinh */
-        }
-        Alert.alert(
-          'Error fetching content, check your network connection and try again!',
-        );
+        console.error("Error fetching data: ", error);
+        setLoading(false);
       }
     };
 
-    fetchContent();
+    fetchData();
   }, []);
 
-  return (
-    <ScrollView style={styles.container}>
-      <View style={{marginVertical: 16}}>
-        <Text style={styles.headerTxt}>1. How the web works?</Text>
-        <Text style={styles.content}>{content}</Text>
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
       </View>
-    </ScrollView>
+    );
+  }
+
+  return (
+    <FlatList
+      data={data}
+      keyExtractor={(item) => item.id.toString()}
+      renderItem={({ item }) => (
+        <View style={styles.itemContainer}>
+          <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.content}>{item.content}</Text>
+        </View>
+      )}
+    />
   );
-}
+};
 
 const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#fff',
-    borderRadius: 10,
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
   },
-  headerTxt: {
-    marginTop: 10,
-    marginLeft: 10,
+  itemContainer: {
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc"
+  },
+  title: {
     fontSize: 20,
-    fontWeight: '700',
-    color: 'darkgreen',
+    fontWeight: "bold"
   },
   content: {
-    margin: 10,
     fontSize: 16,
-    color: 'black',
-  },
+    marginTop: 8
+  }
 });
 
 export default ModuleContent;

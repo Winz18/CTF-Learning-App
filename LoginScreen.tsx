@@ -1,36 +1,35 @@
-import React, {useState} from 'react';
-import {View, Text, TextInput, Button, StyleSheet, Alert} from 'react-native';
-import type {PropsWithChildren} from 'react';
-import {NavigationProp} from '@react-navigation/native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import type { PropsWithChildren } from 'react';
+import { NavigationProp } from '@react-navigation/native';
 import axios from 'axios';
-import {useAuth} from './AuthProvider.tsx';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAuth } from './AuthProvider';
 
 type SectionProps = PropsWithChildren<{
   navigation: NavigationProp<any, any>;
 }>;
 
-function LoginScreen({navigation}: SectionProps): React.JSX.Element {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const {user, updateUser, signOut} = useAuth();
-  const [email, setEmail] = useState('');
+function LoginScreen({ navigation }: SectionProps): React.JSX.Element {
+  const { updateUser } = useAuth();
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  // Xử lý logic đăng nhập ở đây
-  const handleSignIn = () => {
-    axios
-      .post('http://10.10.0.249:3000/auth/signin', {email, password})
-      .then(response => {
-        Alert.alert('Success', 'Login successful');
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const token = response.data.token;
-        const info = response.data.info;
-        updateUser(info);
-        navigation.navigate('Home');
-      })
-      .catch(error => {
-        console.error(error);
-        Alert.alert('Error', 'Login failed');
-      });
+  const handleSignIn = async () => {
+    try {
+      const response = await axios.post('http://10.0.2.2:8000/api/auth/login/', { username, password });
+      const token = response.data.token;
+
+      await AsyncStorage.setItem('userToken', token);
+      updateUser({ id: response.data.user_id, email: response.data.email, username, token});
+
+      Alert.alert('Success', 'Login successful');
+      navigation.navigate('Home');
+    } catch (error: any) {
+      console.error(error);
+      const errorMsg = error.response?.data?.detail || 'Login failed';
+      Alert.alert('Error', errorMsg);
+    }
   };
 
   return (
@@ -38,9 +37,9 @@ function LoginScreen({navigation}: SectionProps): React.JSX.Element {
       <Text style={styles.title}>Welcome</Text>
       <TextInput
         style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
+        placeholder="Username"
+        value={username}
+        onChangeText={setUsername}
       />
       <TextInput
         style={styles.input}
