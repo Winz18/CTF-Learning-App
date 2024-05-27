@@ -50,7 +50,7 @@ function LoginScreen({ navigation }: SectionProps): React.JSX.Element {
       <Text>{"\n"}</Text>
       <Button
         title="Sign Up"
-        onPress={() => navigation.navigate("SignUpScreen")}
+        onPress={() => navigation.navigate("SignUp")}
       />
     </View>
   );

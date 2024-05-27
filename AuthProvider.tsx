@@ -1,5 +1,5 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { createContext, ReactNode, useContext, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface AuthContextProps {
   user: User | null;
@@ -26,19 +26,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const signIn = async (token: string, userData: User) => {
     try {
-      await AsyncStorage.setItem('userToken', token);
+      await AsyncStorage.setItem("userToken", token);
       setUser(userData);
     } catch (error) {
-      console.error('Failed to save token', error);
+      console.error("Failed to save token", error);
     }
   };
 
   const signOut = async () => {
     try {
-      await AsyncStorage.removeItem('userToken');
+      await AsyncStorage.removeItem("userToken");
       setUser(null);
     } catch (error) {
-      console.error('Failed to remove token', error);
+      console.error("Failed to remove token", error);
     }
   };
 
@@ -56,7 +56,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 export const useAuth = (): AuthContextProps => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };

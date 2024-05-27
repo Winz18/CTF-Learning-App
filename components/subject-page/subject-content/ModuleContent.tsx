@@ -1,73 +1,59 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, ActivityIndicator } from "react-native";
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 
-interface BlogPost {
+type Article = {
   id: number;
-  title: string;
+  name: string;
+  author: string;
+  date: string;
+  total_views: number;
   content: string;
-}
-
-function ModuleContent(): React.JSX.Element {
-  const [loading, setLoading] = useState<boolean>(true);
-  const [data, setData] = useState<BlogPost[]>([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("http://google.com");
-        setData(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching data: ", error);
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  if (loading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
-    );
-  }
-
-  return (
-    <FlatList
-      data={data}
-      keyExtractor={(item) => item.id.toString()}
-      renderItem={({ item }) => (
-        <View style={styles.itemContainer}>
-          <Text style={styles.title}>{item.title}</Text>
-          <Text style={styles.content}>{item.content}</Text>
-        </View>
-      )}
-    />
-  );
 };
 
+type ModuleContentProps = {
+  article: Article;
+};
+
+function ModuleContent({ article }: ModuleContentProps): React.JSX.Element {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>{article.name}</Text>
+      <Text style={styles.author}>Author: {article.author}</Text>
+      <Text style={styles.date}>Created at: {article.date.substring(0, 10)}</Text>
+      <Text style={styles.views}>Total views: {article.total_views}</Text>
+      <Text style={styles.content}>{article.content}</Text>
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  itemContainer: {
+  container: {
     padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc"
+    backgroundColor: "#f5f5f5",
   },
   title: {
-    fontSize: 20,
-    fontWeight: "bold"
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 16,
+  },
+  author: {
+    fontSize: 16,
+    marginBottom: 8,
+    color: "darkgreen",
+  },
+  date: {
+    fontSize: 16,
+    marginBottom: 8,
+    color: "darkgreen",
+  },
+  views: {
+    fontSize: 16,
+    marginBottom: 8,
+    color: "darkgreen",
   },
   content: {
     fontSize: 16,
-    marginTop: 8
-  }
+  },
 });
 
 export default ModuleContent;

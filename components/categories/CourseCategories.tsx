@@ -1,77 +1,38 @@
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import CourseBackground from './CourseBackground';
-
-const images: {[key: string]: any} = {
-  web: require('./img/Web.jpg'),
-  foren: require('./img/Foren.jpg'),
-  reverse: require('./img/RE.jpg'),
-  pwn: require('./img/Pwn.jpg'),
-  crypto: require('./img/Crypto.jpg'),
-  others: require('./img/Others.jpg'),
-};
+import React, { PropsWithChildren } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import CourseButton from "./CourseButton.tsx";
+import {NavigationProp} from '@react-navigation/native';
 
 type SectionProps = PropsWithChildren<{
-  NewScr: () => void;
+  navigation: NavigationProp<any, any>;
 }>;
 
-function CourseCategories({
-  NewScr: Switching,
-}: SectionProps): React.JSX.Element {
+const images: { [key: string]: any } = {
+  web: require("./img/Web.jpg"),
+  foren: require("./img/Foren.jpg"),
+  reverse: require("./img/RE.jpg"),
+  pwn: require("./img/Pwn.jpg"),
+  crypto: require("./img/Crypto.jpg"),
+  others: require("./img/Others.jpg"),
+};
+
+function CourseCategories({navigation}: SectionProps): React.JSX.Element {
+
+  const goToCourseScreen = (articles: any[], title: string) => {
+    navigation.navigate("Course", { articles, title });
+  };
   return (
     <View>
       <View style={styles.categoriesContainer}>
         <Text style={styles.text1}>Categories</Text>
       </View>
       <View style={styles.courseContainer}>
-        <TouchableOpacity onPress={Switching}>
-          <CourseBackground
-            title="Web Security"
-            numberOfModules="số lượng modules"
-            typeCourse={images.web}
-          />
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={Switching}>
-          <CourseBackground
-            title="Forensics"
-            numberOfModules="số lượng modules"
-            typeCourse={images.foren}
-          />
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={Switching}>
-          <CourseBackground
-            title="Reversing"
-            numberOfModules="số lượng modules"
-            typeCourse={images.reverse}
-          />
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={Switching}>
-          <CourseBackground
-            title="Pwnable"
-            numberOfModules="số lượng modules"
-            typeCourse={images.pwn}
-          />
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={Switching}>
-          <CourseBackground
-            title="Crypto"
-            numberOfModules="số lượng modules"
-            typeCourse={images.crypto}
-          />
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={Switching}>
-          <CourseBackground
-            title="Others"
-            numberOfModules="số lượng modules"
-            typeCourse={images.others}
-          />
-        </TouchableOpacity>
+        <CourseButton title="Web Security" image={images.web} onPress={goToCourseScreen} />
+        <CourseButton title="Forensics" image={images.foren} onPress={goToCourseScreen} />
+        <CourseButton title="Reversing Engineering" image={images.reverse} onPress={goToCourseScreen} />
+        <CourseButton title="Binary Exploitation" image={images.pwn} onPress={goToCourseScreen} />
+        <CourseButton title="Cryptography" image={images.crypto} onPress={goToCourseScreen} />
+        <CourseButton title="Misc" image={images.others} onPress={goToCourseScreen} />
       </View>
     </View>
   );
@@ -79,26 +40,20 @@ function CourseCategories({
 
 const styles = StyleSheet.create({
   categoriesContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginHorizontal: 10,
     marginVertical: 10,
   },
-
   text1: {
     fontSize: 16,
-    fontWeight: '700',
-    color: 'black',
+    fontWeight: "700",
+    color: "black",
   },
-
-  text2: {
-    color: 'blue',
-  },
-
   courseContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
   },
 });
 

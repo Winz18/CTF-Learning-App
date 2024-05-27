@@ -27,16 +27,16 @@ function App(): React.JSX.Element {
     <AuthProvider>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="LoginScreen"
+          initialRouteName="Login"
           screenOptions={{headerShown: false}}>
           <Stack.Screen name="Home" component={MainScreen} />
           <Stack.Screen name="Course" component={CourseScreen} />
-          <Stack.Screen name="ModuleScreen" component={ModuleScreen} />
-          <Stack.Screen name="RankingScreen" component={RankingScreen} />
-          <Stack.Screen name="QuizScreen" component={QuizScreen} />
-          <Stack.Screen name="LoginScreen" component={LoginScreen} />
-          <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
-          <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+          <Stack.Screen name="Module" component={ModuleScreen} />
+          <Stack.Screen name="Ranking" component={RankingScreen} />
+          <Stack.Screen name="Quiz" component={QuizScreen} />
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="SignUp" component={SignUpScreen} />
+          <Stack.Screen name="Profile" component={ProfileScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </AuthProvider>
