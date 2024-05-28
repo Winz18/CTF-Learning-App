@@ -1,5 +1,7 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from "react";
+import { Image, StyleSheet, Text, View, Dimensions } from "react-native";
+import { useAuth } from "../../../AuthProvider.tsx";
+import Video from "react-native-video";
 
 type Article = {
   id: number;
@@ -14,45 +16,97 @@ type ModuleContentProps = {
   article: Article;
 };
 
-function ModuleContent({ article }: ModuleContentProps): React.JSX.Element {
+const ModuleContent = ({ article }: ModuleContentProps): React.JSX.Element => {
+  const { user } = useAuth();
+  const [articleContent, setArticleContent] = useState<{
+    [key: number]: [string, string, string, string];
+  }>({});
+
+  useEffect(() => {
+    fetch(`http://10.0.2.2:8000/api/sections/?article_id=${article.id}`, {
+      headers: {
+        Authorization: "Token " + user?.token,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const content: { [key: number]: [string, string, string, string] } = {};
+        data.forEach((item: any) => {
+          content[item.position] = [
+            item.part_type,
+            item.image,
+            item.text,
+            item.video_url,
+          ];
+        });
+        setArticleContent(content);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [article.id, user?.token]);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{article.name}</Text>
-      <Text style={styles.author}>Author: {article.author}</Text>
-      <Text style={styles.date}>Created at: {article.date.substring(0, 10)}</Text>
-      <Text style={styles.views}>Total views: {article.total_views}</Text>
-      <Text style={styles.content}>{article.content}</Text>
+      {Object.entries(articleContent)
+        .sort((a, b) => parseInt(a[0]) - parseInt(b[0]))
+        .map(([key, value]) => {
+          const [type, image, text, video_url] = value;
+          if (type === "text") {
+            return <Text key={key} style={styles.text}>{text}</Text>;
+          } else if (type === "image") {
+            return (
+              <Image
+                key={key}
+                source={{ uri: image }}
+                style={styles.image}
+              />
+            );
+          } else if (type === "video") {
+            // Kiểm tra URL video
+            if (video_url && video_url.startsWith("http")) {
+              return (
+                <Video
+                  key={key}
+                  source={{ uri: "https://www.w3schools.com/html/mov_bbb.mp4" }}
+                  style={styles.video}
+                  controls={true}
+                  resizeMode="contain"
+                  onError={(e) => console.error("Video error", e)}
+                  onLoad={(data) => console.log("Video loaded", data)}
+                  ignoreSilentSwitch="ignore"
+                  allowsExternalPlayback={false}
+                />
+              );
+            } else {
+              console.warn("Invalid video URL", video_url);
+              return <Text key={key} style={styles.text}>Video URL is invalid</Text>;
+            }
+          }
+          return null;
+        })}
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     padding: 16,
     backgroundColor: "#f5f5f5",
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 16,
-  },
-  author: {
+  text: {
     fontSize: 16,
     marginBottom: 8,
-    color: "darkgreen",
   },
-  date: {
-    fontSize: 16,
+  image: {
+    width: "100%",
+    height: 200,
     marginBottom: 8,
-    color: "darkgreen",
   },
-  views: {
-    fontSize: 16,
+  video: {
+    width: Dimensions.get("window").width - 32, // Chiều rộng của video bằng chiều rộng màn hình trừ đi padding
+    height: 200,
     marginBottom: 8,
-    color: "darkgreen",
-  },
-  content: {
-    fontSize: 16,
   },
 });
 
