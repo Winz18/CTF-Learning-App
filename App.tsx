@@ -18,6 +18,8 @@ import QuizScreen from './QuizScreen.tsx';
 import LoginScreen from './LoginScreen.tsx';
 import SignUpScreen from './SignupScreen.tsx';
 import ProfileScreen from './ProfileScreen.tsx';
+import UploadScreen from './UploadScreen.tsx';
+import ModuleEdit from './ModuleEdit.tsx';
 import {AuthProvider} from './AuthProvider.tsx';
 
 const Stack = createNativeStackNavigator();
@@ -37,6 +39,8 @@ function App(): React.JSX.Element {
           <Stack.Screen name="LoginScreen" component={LoginScreen} />
           <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
           <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+          <Stack.Screen name="UploadScreen" component={UploadScreen}/>
+          <Stack.Screen name="ModuleEdit" component={ModuleEdit}/>
         </Stack.Navigator>
       </NavigationContainer>
     </AuthProvider>

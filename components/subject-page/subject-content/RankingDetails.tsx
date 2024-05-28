@@ -1,19 +1,44 @@
 import React from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import RankingIndex from './RankingIndex.tsx';
+import axios from 'axios';
+import {useAuth} from '../../../AuthProvider';
+
+
 
 function RankingDetails(): React.JSX.Element {
+  const {user} = useAuth();
+  const [ListRanking, setListRanking] = React.useState([]);
+  React.useEffect(() => {
+    axios
+      .get('http://10.0.2.2:8000/api/custom-users/', {
+        headers: {
+          Authorization: `token ${user.token}`,
+        },
+      })
+       .then((response) => {
+            setListRanking(response.data);
+       })
+         .catch((error) => {
+                console.log(error);
+         });
+   }, []);
+   const sortedItems = ListRanking.sort((a, b) => {
+     return a.rank !== b.rank ? a.rank - b.rank : a.contribution - b.contribution;
+   });
   return (
     <View style={styles.container}>
       {/* Tạo khoảng trống */}
       <View>
         <Text />
       </View>
-      <RankingIndex rank={'1'} text={{username: 'Hacker 001'}} />
-      <RankingIndex rank={'2'} text={{username: 'Hacker 002'}} />
-      <RankingIndex rank={'3'} text={{username: 'Hacker 003'}} />
-      <RankingIndex rank={'4'} text={{username: 'Hacker 004'}} />
-      <RankingIndex rank={'5'} text={{username: 'Hacker 005'}} />
+      {ListRanking.map((item, index) => (
+              <RankingIndex
+                key={index}
+                rank={(index + 1).toString()}
+                text={{ username: item.user.username }}
+              />
+      ))}
     </View>
   );
 }

@@ -44,6 +44,11 @@ function MainHeader({navigation}: SectionProps): React.JSX.Element {
     navigation.navigate('RankingScreen');
   };
 
+  const handleUpload = () => {
+    setModalVisible(false);
+    navigation.navigate('UploadScreen');
+  };
+
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={handleHelp}>
@@ -63,6 +68,9 @@ function MainHeader({navigation}: SectionProps): React.JSX.Element {
           </TouchableOpacity>
           <TouchableOpacity style={styles.option} onPress={handleProfile}>
             <Text style={{color: 'black', fontSize: 16}}>Xem Profile</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.option} onPress={handleUpload}>
+             <Text style={{color: 'black', fontSize: 16}}>Upload Course</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.cancelButton}

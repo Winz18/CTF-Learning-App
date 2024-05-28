@@ -77,7 +77,7 @@ function QuizScreen({navigation}: SectionProps): React.JSX.Element {
         <TouchableOpacity onPress={backToDetail}>
           <Image
             style={styles.img}
-            source={require('C:\\Users\\Admin\\Learning\\University\\Subjects\\Lap_Trinh_Di_Dong\\CK\\CTF_App\\components\\subject-page\\header\\img\\left-arrow.png')}
+            source={require('./components/subject-page/header/img/left-arrow.png')}
           />
         </TouchableOpacity>
       </View>
