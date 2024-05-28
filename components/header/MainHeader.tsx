@@ -46,7 +46,7 @@ function MainHeader({navigation}: SectionProps): React.JSX.Element {
 
   const handleUpload = () => {
     setModalVisible(false);
-    navigation.navigate('UploadScreen');
+    navigation.navigate('Upload');
   };
 
   return (
@@ -70,7 +70,7 @@ function MainHeader({navigation}: SectionProps): React.JSX.Element {
             <Text style={{color: 'black', fontSize: 16}}>Xem Profile</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.option} onPress={handleUpload}>
-             <Text style={{color: 'black', fontSize: 16}}>Upload Course</Text>
+             <Text style={{color: 'black', fontSize: 16}}>Create Module</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.cancelButton}

@@ -29,7 +29,7 @@ function CourseCategories({navigation}: SectionProps): React.JSX.Element {
       <View style={styles.courseContainer}>
         <CourseButton title="Web Security" image={images.web} onPress={goToCourseScreen} />
         <CourseButton title="Forensics" image={images.foren} onPress={goToCourseScreen} />
-        <CourseButton title="Reversing Engineering" image={images.reverse} onPress={goToCourseScreen} />
+        <CourseButton title="Reverse Engineering" image={images.reverse} onPress={goToCourseScreen} />
         <CourseButton title="Binary Exploitation" image={images.pwn} onPress={goToCourseScreen} />
         <CourseButton title="Cryptography" image={images.crypto} onPress={goToCourseScreen} />
         <CourseButton title="Misc" image={images.others} onPress={goToCourseScreen} />

@@ -16,7 +16,7 @@ function UploadScreen({navigation}: SectionProps): React.JSX.Element {
       <ScrollView>
         <View>
           <UploadCourseHeader  navigation={navigation} />
-          <UploadCourseContent navigation={navigation} />
+          <UploadCourseContent />
         </View>
       </ScrollView>
     </View>

@@ -6,11 +6,7 @@ import axios from 'axios';
 import {useAuth} from '../../../AuthProvider';
 
 
-type SectionProps = PropsWithChildren<{
-  navigation: NavigationProp<any, any>;
-}>;
-
-function UploadCourseContent({navigation}: SectionProps): React.JSX.Element {
+function UploadCourseContent(): React.JSX.Element {
     let categories = [
         'Web Security',
         'Cryptography',
@@ -22,39 +18,32 @@ function UploadCourseContent({navigation}: SectionProps): React.JSX.Element {
     const [name, setNameCourse] = React.useState('');
     const [category, setCategory] = React.useState('');
     const {user} = useAuth();
+    const [articles, setArticles] = React.useState([]);
     const [author, setAuthor] = React.useState();
     const handleSelect = (index, value) => {
         setCategory(value);
       };
-    const GotoEdit = () => {
-        navigation.navigate("ModuleEdit");
-    };
     React.useEffect(() => {
         if (user && user.id) {
           setAuthor(user.id);
         }
     }, [user]);
     const handleCreate = () => {
-    axios.
-        post('http://10.0.2.2:8000/api/create-module/',{
-            name,
-            category,
-            author
-        })
-        .then((response) => {
-            console.log(response.data);
-            Alert.alert('Course Created Successfully');
-            GotoEdit();
-        })
-        .catch((error) => {
-            Alert.alert('Course Created Failed');
-            console.log(error);
-        });
-    console.log(user.token);
-    console.log(name);
-    console.log(category);
-    console.log(author);
-    };
+          axios.
+              post('http://10.0.2.2:8000/api/create-module/',{
+                  name,
+                  category,
+                  author
+              })
+              .then((response) => {
+              console.log(response.data);
+                  Alert.alert('Course Created Successfully');
+              })
+              .catch((error) => {
+                  Alert.alert('Course Created Failed');
+                  console.log(error);
+               });
+      };
     return (
         <SafeAreaView>
         <View style={styles.container}>
@@ -75,8 +64,8 @@ function UploadCourseContent({navigation}: SectionProps): React.JSX.Element {
               <TouchableOpacity
                 style={styles.Create}
                 onPress={handleCreate}
-                >
-                  <Text style={styles.text}>Create</Text>
+              >
+                <Text style={styles.text}>Create</Text>
               </TouchableOpacity>
         </View>
             </SafeAreaView>

@@ -29,7 +29,7 @@ function ModuleHeader({ goBack, goToTest, article }: SectionProps): React.JSX.El
         </TouchableOpacity>
       </View>
       <Text style={styles.nameOfModuleTxt}>
-        {article.name}
+        ___NAME__
       </Text>
       <Text>{"\n"}</Text>
       <View style={styles.navigationButton}>

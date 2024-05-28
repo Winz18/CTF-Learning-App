@@ -4,7 +4,7 @@ import { useAuth } from "../../../AuthProvider.tsx";
 import Video from "react-native-video";
 
 type Article = {
-  id: number;
+  id: string;
   name: string;
   author: string;
   date: string;
@@ -30,7 +30,11 @@ const ModuleContent = ({ article }: ModuleContentProps): React.JSX.Element => {
     })
       .then((response) => response.json())
       .then((data) => {
-        const content: { [key: number]: [string, string, string, string] } = {};
+        console.log(data);
+        console.log(article.id)
+        // Tạo một object với key là position của section, value là một mảng gồm các thông tin của section
+        // thứ tự string: type, image, text, video_url
+        const content: { [key: number]: [string, string, string, string, string] } = {};
         data.forEach((item: any) => {
           content[item.position] = [
             item.part_type,
@@ -47,6 +51,7 @@ const ModuleContent = ({ article }: ModuleContentProps): React.JSX.Element => {
   }, [article.id, user?.token]);
 
   return (
+  // if user.id not author.id, show content
     <View style={styles.container}>
       {Object.entries(articleContent)
         .sort((a, b) => parseInt(a[0]) - parseInt(b[0]))
@@ -86,6 +91,7 @@ const ModuleContent = ({ article }: ModuleContentProps): React.JSX.Element => {
           return null;
         })}
     </View>
+    //else show editUI
   );
 };
 
