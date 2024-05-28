@@ -16,7 +16,6 @@ function ProfileScreen({ navigation }: SectionProps): React.JSX.Element {
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
 
-
   const handleUpdateEmail = async () => {
     if (!user) {
       Alert.alert("Error", "User not found");
