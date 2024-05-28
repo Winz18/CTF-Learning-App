@@ -1,73 +1,113 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, ActivityIndicator } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Image, StyleSheet, Text, View, Dimensions } from "react-native";
+import { useAuth } from "../../../AuthProvider.tsx";
+import Video from "react-native-video";
 
-interface BlogPost {
+type Article = {
   id: number;
-  title: string;
+  name: string;
+  author: string;
+  date: string;
+  total_views: number;
   content: string;
-}
+};
 
-function ModuleContent(): React.JSX.Element {
-  const [loading, setLoading] = useState<boolean>(true);
-  const [data, setData] = useState<BlogPost[]>([]);
+type ModuleContentProps = {
+  article: Article;
+};
+
+const ModuleContent = ({ article }: ModuleContentProps): React.JSX.Element => {
+  const { user } = useAuth();
+  const [articleContent, setArticleContent] = useState<{
+    [key: number]: [string, string, string, string];
+  }>({});
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("http://google.com");
-        setData(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching data: ", error);
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  if (loading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
-    );
-  }
+    fetch(`http://10.0.2.2:8000/api/sections/?article_id=${article.id}`, {
+      headers: {
+        Authorization: "Token " + user?.token,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const content: { [key: number]: [string, string, string, string] } = {};
+        data.forEach((item: any) => {
+          content[item.position] = [
+            item.part_type,
+            item.image,
+            item.text,
+            item.video_url,
+          ];
+        });
+        setArticleContent(content);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [article.id, user?.token]);
 
   return (
-    <FlatList
-      data={data}
-      keyExtractor={(item) => item.id.toString()}
-      renderItem={({ item }) => (
-        <View style={styles.itemContainer}>
-          <Text style={styles.title}>{item.title}</Text>
-          <Text style={styles.content}>{item.content}</Text>
-        </View>
-      )}
-    />
+    <View style={styles.container}>
+      {Object.entries(articleContent)
+        .sort((a, b) => parseInt(a[0]) - parseInt(b[0]))
+        .map(([key, value]) => {
+          const [type, image, text, video_url] = value;
+          if (type === "text") {
+            return <Text key={key} style={styles.text}>{text}</Text>;
+          } else if (type === "image") {
+            return (
+              <Image
+                key={key}
+                source={{ uri: image }}
+                style={styles.image}
+              />
+            );
+          } else if (type === "video") {
+            // Kiểm tra URL video
+            if (video_url && video_url.startsWith("http")) {
+              return (
+                <Video
+                  key={key}
+                  source={{ uri: "https://www.w3schools.com/html/mov_bbb.mp4" }}
+                  style={styles.video}
+                  controls={true}
+                  resizeMode="contain"
+                  onError={(e) => console.error("Video error", e)}
+                  onLoad={(data) => console.log("Video loaded", data)}
+                  ignoreSilentSwitch="ignore"
+                  allowsExternalPlayback={false}
+                />
+              );
+            } else {
+              console.warn("Invalid video URL", video_url);
+              return <Text key={key} style={styles.text}>Video URL is invalid</Text>;
+            }
+          }
+          return null;
+        })}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  itemContainer: {
+  container: {
     padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc"
+    backgroundColor: "#f5f5f5",
   },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold"
-  },
-  content: {
+  text: {
     fontSize: 16,
-    marginTop: 8
-  }
+    marginBottom: 8,
+  },
+  image: {
+    width: "100%",
+    height: 200,
+    marginBottom: 8,
+  },
+  video: {
+    width: Dimensions.get("window").width - 32, // Chiều rộng của video bằng chiều rộng màn hình trừ đi padding
+    height: 200,
+    marginBottom: 8,
+  },
 });
 
 export default ModuleContent;

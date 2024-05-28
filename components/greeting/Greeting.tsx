@@ -1,13 +1,13 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {useAuth} from '../../AuthProvider';
-
+import { useAuth } from "../../AuthProvider.tsx";
 
 function Greeting(): React.JSX.Element {
-    const {user} = useAuth();
+  const { user } = useAuth();
+
   return (
     <View style={styles.container}>
-      <Text style={styles.text1}>Chào, {user.username}</Text>
+      <Text style={styles.text1}>Welcome {user?.username},</Text>
       <Text style={styles.text2}>
         Hãy chọn khóa học mà bạn mong muốn! Happy hacking :))
       </Text>

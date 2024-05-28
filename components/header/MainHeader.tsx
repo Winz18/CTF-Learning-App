@@ -21,7 +21,7 @@ function MainHeader({navigation}: SectionProps): React.JSX.Element {
   // Ví dụ: đăng xuất người dùng, xóa token, vv.
   const handleLogout = () => {
     setModalVisible(false);
-    navigation.navigate('LoginScreen');
+    navigation.navigate('Login');
   };
 
   // Show help message
@@ -35,13 +35,13 @@ function MainHeader({navigation}: SectionProps): React.JSX.Element {
   // Show email, update mail, change password
   const handleProfile = () => {
     setModalVisible(false);
-    navigation.navigate('ProfileScreen');
+    navigation.navigate('Profile');
   };
 
   // Show scoreboard
   const handleRanking = () => {
     setModalVisible(false);
-    navigation.navigate('RankingScreen');
+    navigation.navigate('Ranking');
   };
 
   const handleUpload = () => {

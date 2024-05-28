@@ -32,7 +32,7 @@ function SignUpScreen({ navigation }: SectionProps): React.JSX.Element {
       })
       .then(response => {
         Alert.alert('Success', 'User registered successfully');
-        navigation.navigate('LoginScreen'); // Điều hướng đến màn hình đăng nhập
+        navigation.navigate('Login');
       })
       .catch(error => {
         console.error(error);
@@ -72,7 +72,7 @@ function SignUpScreen({ navigation }: SectionProps): React.JSX.Element {
       />
       <Button title="Sign Up" onPress={handleSignUp} />
       <Text>{'\n'}</Text>
-      <Button title="Back to login" onPress={() => navigation.navigate('LoginScreen')} />
+      <Button title="Back to login" onPress={() => navigation.navigate('Login')} />
     </ScrollView>
   );
 }

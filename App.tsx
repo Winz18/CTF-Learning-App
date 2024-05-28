@@ -18,8 +18,6 @@ import QuizScreen from './QuizScreen.tsx';
 import LoginScreen from './LoginScreen.tsx';
 import SignUpScreen from './SignupScreen.tsx';
 import ProfileScreen from './ProfileScreen.tsx';
-import UploadScreen from './UploadScreen.tsx';
-import ModuleEdit from './ModuleEdit.tsx';
 import {AuthProvider} from './AuthProvider.tsx';
 
 const Stack = createNativeStackNavigator();
@@ -29,18 +27,16 @@ function App(): React.JSX.Element {
     <AuthProvider>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="LoginScreen"
+          initialRouteName="Login"
           screenOptions={{headerShown: false}}>
           <Stack.Screen name="Home" component={MainScreen} />
           <Stack.Screen name="Course" component={CourseScreen} />
-          <Stack.Screen name="ModuleScreen" component={ModuleScreen} />
-          <Stack.Screen name="RankingScreen" component={RankingScreen} />
-          <Stack.Screen name="QuizScreen" component={QuizScreen} />
-          <Stack.Screen name="LoginScreen" component={LoginScreen} />
-          <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
-          <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-          <Stack.Screen name="UploadScreen" component={UploadScreen}/>
-          <Stack.Screen name="ModuleEdit" component={ModuleEdit}/>
+          <Stack.Screen name="Module" component={ModuleScreen} />
+          <Stack.Screen name="Ranking" component={RankingScreen} />
+          <Stack.Screen name="Quiz" component={QuizScreen} />
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="SignUp" component={SignUpScreen} />
+          <Stack.Screen name="Profile" component={ProfileScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </AuthProvider>
