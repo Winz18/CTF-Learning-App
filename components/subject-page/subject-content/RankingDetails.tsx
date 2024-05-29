@@ -24,7 +24,7 @@ function RankingDetails(): React.JSX.Element {
          });
    }, []);
    const sortedItems = ListRanking.sort((a: any, b: any) => {
-     return a.rank !== b.rank ? b.rank - a.rank : a.contribution - b.contribution;
+     return a.rank !== b.rank ? a.rank - b.rank : a.contribution - b.contribution;
    });
   return (
     <View style={styles.container}>

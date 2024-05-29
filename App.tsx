@@ -21,6 +21,7 @@ import ProfileScreen from './ProfileScreen.tsx';
 import {AuthProvider} from './AuthProvider.tsx';
 import UploadScreen from './UploadScreen.tsx';
 import ModuleEdit from './ModuleEdit.tsx';
+
 const Stack = createNativeStackNavigator();
 
 function App(): React.JSX.Element {
