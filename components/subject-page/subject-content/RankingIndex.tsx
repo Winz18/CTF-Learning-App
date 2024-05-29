@@ -27,7 +27,7 @@ function RankingIndex({rank, text, score}: SectionProps): React.JSX.Element {
       </View>
       <View style={styles.wrapTwoComponent}>
               {/* Tên của users */}
-              <Text style={{fontSize: 20, fontWeight: '700', color: 'black'}}>
+              <Text style={{fontSize: 20, fontWeight: '700', color: 'black', marginLeft: 130}}>
                 {score}
               </Text>
       </View>

@@ -133,7 +133,7 @@ function ProfileScreen({ navigation }: SectionProps): React.JSX.Element {
       </Card>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {

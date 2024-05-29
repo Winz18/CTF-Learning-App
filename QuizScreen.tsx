@@ -1,153 +1,173 @@
-import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  FlatList,
-  Alert,
-  Image,
-} from 'react-native';
-import type {PropsWithChildren} from 'react';
-import {NavigationProp} from '@react-navigation/native';
+import type { PropsWithChildren } from "react";
+import React, { useEffect, useState } from "react";
+import { NavigationProp } from "@react-navigation/native";
+import { ActivityIndicator, Alert, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import axios from "axios";
+import { useAuth } from "./AuthProvider.tsx";
 
 interface Question {
-  question: string;
-  options: string[];
-  correctOption: string;
+  id: number;
+  content: string;
+  answers: Answer[];
 }
 
-const questions: Question[] = [
-  {
-    question: 'What is the capital of France?',
-    options: ['Paris', 'London', 'Berlin', 'Madrid'],
-    correctOption: 'Paris',
-  },
-  {
-    question: 'What is 2 + 2?',
-    options: ['3', '4', '5', '6'],
-    correctOption: '4',
-  },
-  // add các câu hỏi vào đây, mỗi câu hỏi gồm 3 thuộc tính như trên
-];
+interface Answer {
+  id: number;
+  content: string;
+  result: boolean;
+}
 
 type SectionProps = PropsWithChildren<{
   navigation: NavigationProp<any, any>;
+  route: any;
 }>;
 
-function QuizScreen({navigation}: SectionProps): React.JSX.Element {
+const QuizScreen = ({ navigation, route }: SectionProps) => {
+  const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [score, setScore] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
+  const { article } = route.params;
 
-  const handleOptionPress = (option: string) => {
-    {
-      /* Hàm xử lí và tính điểm */
-    }
-    setSelectedOption(option);
-    if (option === questions[currentQuestionIndex].correctOption) {
-      setScore(score + 1);
-    }
-    setTimeout(() => {
-      setSelectedOption(null);
-      if (currentQuestionIndex < questions.length - 1) {
-        setCurrentQuestionIndex(currentQuestionIndex + 1);
-      } else {
-        Alert.alert(
-          `Quiz Finished! Your score is:  ${
-            score +
-            (option === questions[currentQuestionIndex].correctOption ? 1 : 0)
-          }/10`,
-        );
-        backToDetail();
+  useEffect(() => {
+    axios.get(`http://10.0.2.2:8000/api/tests/${article.test}/`, {
+      headers: {
+        Authorization: `Token ${user?.token}`
       }
-    }, 1000);
+    })
+      .then(response => {
+        setQuestions(response.data.questions);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error("Failed to fetch questions", error);
+        setLoading(false);
+      });
+  }, [article.test, user?.token]);
+
+  const handleOptionPress = (optionId: number) => {
+    const currentQuestion = questions[currentQuestionIndex];
+    const selectedAnswer = currentQuestion.answers.find(answer => answer.id === optionId);
+
+    if (selectedAnswer) {
+      setSelectedOption(optionId);
+      if (selectedAnswer.result) {
+        setScore(prevScore => prevScore + 1);
+      }
+
+      setTimeout(() => {
+        setSelectedOption(null);
+        if (currentQuestionIndex < questions.length - 1) {
+          setCurrentQuestionIndex(currentQuestionIndex + 1);
+        } else {
+          Alert.alert(
+            `Quiz Finished! Your score is: ${
+              score + (selectedAnswer.result ? 1 : 0)
+            }/${questions.length}`
+          );
+          backToDetail();
+        }
+      }, 1000);
+    }
   };
-  {
-    /* Hàm quay lại trang trước đó */
-  }
+
   const backToDetail = () => {
     navigation.goBack();
   };
 
+  if (loading) {
+    return <ActivityIndicator size="large" color="#0000ff" style={styles.loading} />;
+  }
+
+  if (questions.length === 0) {
+    return <Text style={styles.message}>No questions available.</Text>;
+  }
+
+  const currentQuestion = questions[currentQuestionIndex];
+
   return (
     <View style={styles.container}>
       <View style={styles.navigationButton}>
-        {/* Nút back */}
         <TouchableOpacity onPress={backToDetail}>
           <Image
             style={styles.img}
-            source={require('./components/subject-page/header/img/left-arrow.png')}
+            source={require("./components/subject-page/header/img/left-arrow.png")}
           />
         </TouchableOpacity>
       </View>
-      {/* Greeting */}
-      <Text style={styles.question}>
-        {'Nếu đã nắm chắc kiến thức,\nhãy thử sức =))\n\n\n'}
-        {currentQuestionIndex + 1}. {questions[currentQuestionIndex].question}
-      </Text>
-      {/* FlatList chứa các đáp án */}
+      <Text style={styles.question}>{currentQuestionIndex + 1}. {currentQuestion.content}</Text>
       <FlatList
-        data={questions[currentQuestionIndex].options}
-        renderItem={({item}) => (
+        data={currentQuestion.answers}
+        renderItem={({ item }) => (
           <TouchableOpacity
             style={[
               styles.option,
               {
-                backgroundColor: item === selectedOption ? 'pink' : 'lightblue',
-              },
+                backgroundColor: item.id === selectedOption ? "#f9c2ff" : "#e2e2e2"
+              }
             ]}
-            onPress={() => handleOptionPress(item)}
-            disabled={selectedOption !== null}>
-            <Text style={styles.optionText}>{item}</Text>
+            onPress={() => handleOptionPress(item.id)}
+            disabled={selectedOption !== null}
+          >
+            <Text style={styles.optionText}>{item.content}</Text>
           </TouchableOpacity>
         )}
-        keyExtractor={item => item}
+        keyExtractor={item => item.id.toString()}
       />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     padding: 16,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: "#ffffff"
   },
   question: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 20,
-    textAlign: 'center',
-    color: '#333333',
+    textAlign: "center",
+    color: "#333333"
   },
   option: {
     padding: 16,
     borderWidth: 1,
-    borderColor: '#dddddd',
+    borderColor: "#dddddd",
     borderRadius: 8,
     marginVertical: 8,
-    width: '100%',
+    width: "100%"
   },
   optionText: {
     fontSize: 18,
-    color: '#333333',
-    alignSelf: 'center',
+    color: "#333333",
+    textAlign: "center"
   },
-
   img: {
-    width: 20,
-    height: 20,
+    width: 24,
+    height: 24
   },
-
   navigationButton: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignSelf: 'flex-start',
-    marginVertical: 15,
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignSelf: "flex-start",
+    marginVertical: 15
   },
+  loading: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  message: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    fontSize: 18,
+    color: "#333333"
+  }
 });
 
 export default QuizScreen;

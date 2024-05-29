@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet, View } from "react-native";
 import { NavigationProp } from "@react-navigation/native";
 import ModuleHeader from "./components/subject-page/header/ModuleHeader";
 import ModuleContent from "./components/subject-page/subject-content/ModuleContent";
+import { useAuth } from "./AuthProvider.tsx";
 
 type SectionProps = {
   navigation: NavigationProp<any, any>;
@@ -10,6 +11,7 @@ type SectionProps = {
 };
 
 function ModuleScreen({ route, navigation }: SectionProps): React.JSX.Element {
+  const { user } = useAuth();
   const { article } = route.params;
 
   const backToCourse = () => {
@@ -17,7 +19,7 @@ function ModuleScreen({ route, navigation }: SectionProps): React.JSX.Element {
   };
 
   const goToTest = () => {
-    navigation.navigate("Quiz");
+   navigation.navigate("Quiz", {article})
   };
 
   return (

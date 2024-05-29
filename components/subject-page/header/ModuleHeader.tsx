@@ -16,6 +16,7 @@ type Article = {
   date: string;
   total_views: number;
   content: string;
+  test: number;
 };
 
 function ModuleHeader({ goBack, goToTest, article }: SectionProps): React.JSX.Element {
