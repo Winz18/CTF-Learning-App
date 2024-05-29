@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Alert, StyleSheet, View } from "react-native";
 import { useAuth } from "./AuthProvider";
 import axios from "axios";
@@ -9,12 +9,14 @@ type SectionProps = {
   navigation: NavigationProp<any, any>;
 };
 
+
+
 function ProfileScreen({ navigation }: SectionProps): React.JSX.Element {
   const { user, updateUser } = useAuth();
   const [email, setEmail] = useState(user?.email || "");
-  const [password, setPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-
+  const [old_password, setPassword] = useState("");
+  const [new_password, setNewPassword] = useState("");
+  const [userData, setUserData] = useState<{[key: string]: [string]}>({});
   const handleUpdateEmail = async () => {
     if (!user) {
       Alert.alert("Error", "User not found");
@@ -22,8 +24,13 @@ function ProfileScreen({ navigation }: SectionProps): React.JSX.Element {
     }
     try {
       await axios.put(
-        `http://10.0.2.2:8000/api/auth/users/${user.id}/email`,
-        { email }
+        `http://10.0.2.2:8000/api/auth/update-email/`,
+        { email },
+        {
+          headers: {
+            Authorization: `token ${user.token}`
+         }
+        }
       );
       updateUser({ ...user, email });
       Alert.alert("Success", "Email updated successfully");
@@ -40,8 +47,13 @@ function ProfileScreen({ navigation }: SectionProps): React.JSX.Element {
     }
     try {
       await axios.put(
-        `http://10.0.2.2:8000/api/auth/users/${user.id}/password`,
-        { password, newPassword }
+        `http://10.0.2.2:8000/api/auth/change-password`,
+        { old_password, new_password },
+        {
+          headers: {
+            Authorization: `token ${user.token}`
+          }
+        }
       );
       Alert.alert("Success", "Password updated successfully");
       setPassword("");
@@ -56,6 +68,25 @@ function ProfileScreen({ navigation }: SectionProps): React.JSX.Element {
     navigation.goBack();
   };
 
+ useEffect(() => {
+    axios.get(`http://10.0.2.2:8000/api/custom-users/?username=${user.username}`, {
+      headers: {
+        Authorization: `token ${user.token}`
+      }
+    })
+    .then((response) => {
+      const content: {[key: string]: [string]} = {};
+      response.data.forEach((item:any) => {
+        content['avatar'] = item.avatar;
+      });
+      setUserData(content);
+      console.log(userData);
+      console.log(userData['avatar']);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+    }, []);
   return (
     <View style={styles.container}>
       <Appbar.Header>
@@ -66,7 +97,7 @@ function ProfileScreen({ navigation }: SectionProps): React.JSX.Element {
         <Card.Title
           title={user?.username}
           subtitle={user?.email}
-          left={(props) => <Avatar.Icon {...props} icon="account" />}
+          left={(props) => <Avatar.Image size={24} source={userData['avatar'] ? { uri: userData.avatar } : require('./components/subject-page/subject-content/img/cup.png')} />}
         />
         <Card.Content>
           <Title>Update Profile</Title>
@@ -83,14 +114,14 @@ function ProfileScreen({ navigation }: SectionProps): React.JSX.Element {
           <Subheading>Change Password</Subheading>
           <TextInput
             label="Current Password"
-            value={password}
+            value={old_password}
             onChangeText={setPassword}
             secureTextEntry
             style={styles.input}
           />
           <TextInput
             label="New Password"
-            value={newPassword}
+            value={new_password}
             onChangeText={setNewPassword}
             secureTextEntry
             style={styles.input}
