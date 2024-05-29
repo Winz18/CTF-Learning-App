@@ -19,9 +19,9 @@ type ModuleContentProps = {
 const ModuleContent = ({ article }: ModuleContentProps): React.JSX.Element => {
   const { user } = useAuth();
   const [articleContent, setArticleContent] = useState<{
-    [key: number]: [string, string, string, string];
+    [key: number]: [string, string, string, string, string];
   }>({});
-
+  const [author_id, setAuthor_id] = useState<string>("");
   useEffect(() => {
     fetch(`http://10.0.2.2:8000/api/sections/?article_id=${article.id}`, {
       headers: {
@@ -30,8 +30,7 @@ const ModuleContent = ({ article }: ModuleContentProps): React.JSX.Element => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-        console.log(article.id)
+        //console.log(data);
         // Tạo một object với key là position của section, value là một mảng gồm các thông tin của section
         // thứ tự string: type, image, text, video_url
         const content: { [key: number]: [string, string, string, string, string] } = {};
@@ -41,9 +40,13 @@ const ModuleContent = ({ article }: ModuleContentProps): React.JSX.Element => {
             item.image,
             item.text,
             item.video_url,
+            item.author_id
           ];
         });
         setArticleContent(content);
+        setAuthor_id(data[0].author_id);
+        console.log(articleContent);
+        console.log(author_id);
       })
       .catch((error) => {
         console.error(error);
@@ -51,47 +54,14 @@ const ModuleContent = ({ article }: ModuleContentProps): React.JSX.Element => {
   }, [article.id, user?.token]);
 
   return (
-  // if user.id not author.id, show content
+    // if user.id not author.id, show content
     <View style={styles.container}>
-      {Object.entries(articleContent)
-        .sort((a, b) => parseInt(a[0]) - parseInt(b[0]))
-        .map(([key, value]) => {
-          const [type, image, text, video_url] = value;
-          if (type === "text") {
-            return <Text key={key} style={styles.text}>{text}</Text>;
-          } else if (type === "image") {
-            return (
-              <Image
-                key={key}
-                source={{ uri: image }}
-                style={styles.image}
-              />
-            );
-          } else if (type === "video") {
-            // Kiểm tra URL video
-            if (video_url && video_url.startsWith("http")) {
-              return (
-                <Video
-                  key={key}
-                  source={{ uri: "https://www.w3schools.com/html/mov_bbb.mp4" }}
-                  style={styles.video}
-                  controls={true}
-                  resizeMode="contain"
-                  onError={(e) => console.error("Video error", e)}
-                  onLoad={(data) => console.log("Video loaded", data)}
-                  ignoreSilentSwitch="ignore"
-                  allowsExternalPlayback={false}
-                />
-              );
-            } else {
-              console.warn("Invalid video URL", video_url);
-              return <Text key={key} style={styles.text}>Video URL is invalid</Text>;
-            }
-          }
-          return null;
-        })}
+        {author_id !== user?.id ? (
+          <Text>not author</Text>
+        ) : (
+          <Text>author</Text>
+        )}
     </View>
-    //else show editUI
   );
 };
 

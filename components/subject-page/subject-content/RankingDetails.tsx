@@ -24,7 +24,7 @@ function RankingDetails(): React.JSX.Element {
          });
    }, []);
    const sortedItems = ListRanking.sort((a, b) => {
-     return a.rank !== b.rank ? a.rank - b.rank : a.contribution - b.contribution;
+     return a.score !== b.score ? b.score - a.score : a.contribution - b.contribution;
    });
   return (
     <View style={styles.container}>
@@ -37,6 +37,7 @@ function RankingDetails(): React.JSX.Element {
                 key={index}
                 rank={(index + 1).toString()}
                 text={{ username: item.user.username }}
+                score={item.score}
               />
       ))}
     </View>

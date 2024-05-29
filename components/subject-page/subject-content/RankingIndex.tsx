@@ -7,9 +7,10 @@ type SectionProps = PropsWithChildren<{
   text: {
     username: string;
   };
+  score: string;
 }>;
 
-function RankingIndex({rank, text}: SectionProps): React.JSX.Element {
+function RankingIndex({rank, text, score}: SectionProps): React.JSX.Element {
   return (
     <View style={styles.container}>
       <View style={styles.number}>
@@ -23,6 +24,12 @@ function RankingIndex({rank, text}: SectionProps): React.JSX.Element {
         <Text style={{fontSize: 20, fontWeight: '700', color: 'black'}}>
           {text.username}
         </Text>
+      </View>
+      <View style={styles.wrapTwoComponent}>
+              {/* Tên của users */}
+              <Text style={{fontSize: 20, fontWeight: '700', color: 'black'}}>
+                {score}
+              </Text>
       </View>
       {/* Biểu tượng cúp */}
       <TouchableOpacity onPress={() => {}}>

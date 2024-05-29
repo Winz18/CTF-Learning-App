@@ -23,7 +23,6 @@ function CourseButton({ title, image, onPress}: SectionProps): React.JSX.Element
       .then((response) => {
         const filteredArticles = response.data.filter((item: any) => item.category === title);
         const sortedArticles = filteredArticles.sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime());
-        console.log(filteredArticles);
         setArticles(filteredArticles);
       })
       .catch((error) => {
