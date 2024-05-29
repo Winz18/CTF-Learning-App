@@ -1,5 +1,5 @@
 import React, { type PropsWithChildren, useState } from "react";
-import { Alert, Image, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Image, Modal, StyleSheet, Text, TouchableOpacity, View, Linking } from "react-native";
 import { NavigationProp } from "@react-navigation/native";
 
 type SectionProps = PropsWithChildren<{
@@ -38,7 +38,7 @@ function MainHeader({ navigation }: SectionProps): React.JSX.Element {
 
   const handleUpload = () => {
     setModalVisible(false);
-    navigation.navigate('Upload');
+    Linking.openURL('http://10.0.2.2:8000').catch((err) => console.error('An error occurred', err));
   };
 
   return (
