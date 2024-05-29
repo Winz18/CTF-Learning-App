@@ -1,7 +1,9 @@
-import React, { PropsWithChildren } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { PropsWithChildren, useEffect, useState } from "react";
+import { DevSettings, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import CourseButton from "./CourseButton.tsx";
-import {NavigationProp} from '@react-navigation/native';
+import { NavigationProp } from "@react-navigation/native";
+import axios from "axios";
+import { useAuth } from "../../AuthProvider.tsx";
 
 type SectionProps = PropsWithChildren<{
   navigation: NavigationProp<any, any>;
@@ -13,18 +15,27 @@ const images: { [key: string]: any } = {
   reverse: require("./img/RE.jpg"),
   pwn: require("./img/Pwn.jpg"),
   crypto: require("./img/Crypto.jpg"),
-  others: require("./img/Others.jpg"),
+  others: require("./img/Others.jpg")
 };
 
-function CourseCategories({navigation}: SectionProps): React.JSX.Element {
+function CourseCategories({ navigation }: SectionProps): React.JSX.Element {
+  const {user} = useAuth()
 
   const goToCourseScreen = (articles: any[], title: string) => {
     navigation.navigate("Course", { articles, title });
   };
+
+  const refresh = () => {
+    DevSettings.reload();
+  }
+
   return (
-    <View>
+    <View style={{ marginLeft: 10 }}>
       <View style={styles.categoriesContainer}>
         <Text style={styles.text1}>Categories</Text>
+        <TouchableOpacity onPress={refresh}>
+          <Text style={{ color: "blue", marginRight: 30 }}>Refresh</Text>
+        </TouchableOpacity>
       </View>
       <View style={styles.courseContainer}>
         <CourseButton title="Web Security" image={images.web} onPress={goToCourseScreen} />
@@ -43,18 +54,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginHorizontal: 10,
-    marginVertical: 10,
+    marginVertical: 10
   },
   text1: {
     fontSize: 16,
     fontWeight: "700",
-    color: "black",
+    color: "black"
   },
   courseContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "space-around",
-  },
+    justifyContent: "space-around"
+  }
 });
 
 export default CourseCategories;

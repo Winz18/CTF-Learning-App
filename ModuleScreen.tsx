@@ -1,8 +1,8 @@
-import React from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
-import {NavigationProp} from '@react-navigation/native';
-import ModuleHeader from './components/subject-page/header/ModuleHeader';
-import ModuleContent from './components/subject-page/subject-content/ModuleContent';
+import React from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { NavigationProp } from "@react-navigation/native";
+import ModuleHeader from "./components/subject-page/header/ModuleHeader";
+import ModuleContent from "./components/subject-page/subject-content/ModuleContent";
 
 type SectionProps = {
   navigation: NavigationProp<any, any>;
@@ -17,14 +17,14 @@ function ModuleScreen({ route, navigation }: SectionProps): React.JSX.Element {
   };
 
   const goToTest = () => {
-    navigation.navigate('Quiz');
+    navigation.navigate("Quiz");
   };
 
   return (
     <View style={styles.container}>
       <ScrollView>
         <View>
-          <ModuleHeader goBack={backToCourse} goToTest={goToTest} article={article}/>
+          <ModuleHeader goBack={backToCourse} goToTest={goToTest} article={article} />
           <ModuleContent article={article} />
         </View>
       </ScrollView>
@@ -34,8 +34,8 @@ function ModuleScreen({ route, navigation }: SectionProps): React.JSX.Element {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-  },
+    flex: 1
+  }
 });
 
 export default ModuleScreen;

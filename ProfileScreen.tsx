@@ -4,7 +4,6 @@ import { useAuth } from "./AuthProvider";
 import axios from "axios";
 import { NavigationProp } from "@react-navigation/native";
 import { Appbar, Avatar, Button, Card, Subheading, TextInput, Title } from "react-native-paper";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type SectionProps = {
   navigation: NavigationProp<any, any>;

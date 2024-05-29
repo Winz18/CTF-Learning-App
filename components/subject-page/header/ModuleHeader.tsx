@@ -1,6 +1,7 @@
 import type { PropsWithChildren } from "react";
 import React from "react";
 import { Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useAuth } from "../../../AuthProvider.tsx";
 
 type SectionProps = PropsWithChildren<{
   goBack: () => void,

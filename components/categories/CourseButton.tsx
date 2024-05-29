@@ -9,7 +9,7 @@ type SectionProps = {
   onPress: (articles: any[], title: string) => void;
 };
 
-function CourseButton({ title, image, onPress}: SectionProps): React.JSX.Element {
+function CourseButton({ title, image, onPress }: SectionProps): React.JSX.Element {
   const { user } = useAuth();
   const [articles, setArticles] = useState([]);
 
@@ -56,13 +56,13 @@ const styles = StyleSheet.create({
   },
   text1: {
     marginTop: 20,
-    marginLeft: 20,
+    marginLeft: 10,
     fontSize: 20,
     fontWeight: "900",
     color: "black"
   },
   text2: {
-    marginLeft: 20,
+    marginLeft: 10,
     color: "blue",
     fontWeight: "900"
   }

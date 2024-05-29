@@ -1,5 +1,5 @@
-import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
 import { useAuth } from "../../AuthProvider.tsx";
 
 function Greeting(): React.JSX.Element {
@@ -17,21 +17,21 @@ function Greeting(): React.JSX.Element {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 10,
+    margin: 10
   },
 
   text1: {
     marginTop: 20,
     fontSize: 30,
-    fontWeight: '700',
-    color: 'black',
+    fontWeight: "700",
+    color: "black"
   },
 
   text2: {
     marginTop: 10,
     fontSize: 20,
-    color: 'gray',
-  },
+    color: "gray"
+  }
 });
 
 export default Greeting;

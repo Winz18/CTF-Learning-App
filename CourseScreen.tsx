@@ -1,6 +1,6 @@
 import React from "react";
-import { View, Text, FlatList, StyleSheet, TouchableOpacity } from "react-native";
-import { NavigationProp } from '@react-navigation/native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { NavigationProp } from "@react-navigation/native";
 
 type SectionProps = {
   navigation: NavigationProp<any, any>;
@@ -12,7 +12,7 @@ function CourseScreen({ route, navigation }: SectionProps): React.JSX.Element {
 
   const handlePress = (article: any) => {
     navigation.navigate("Module", { article });
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#f5f5f5"
   },
   title: {
     fontSize: 30,
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
     alignSelf: "center",
     color: "blue",
-    fontStyle: "italic",
+    fontStyle: "italic"
   },
   articleContainer: {
     marginBottom: 16,
@@ -58,14 +58,14 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 10,
-    shadowOffset: { width: 0, height: 0 },
+    shadowOffset: { width: 0, height: 0 }
   },
   articleTitle: {
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 8,
-    color: "darkblue",
-  },
+    color: "darkblue"
+  }
 });
 
 export default CourseScreen;

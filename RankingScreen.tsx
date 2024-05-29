@@ -1,17 +1,17 @@
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
-import {NavigationProp} from '@react-navigation/native';
-import RankingHeader from './components/subject-page/header/RankingHeader.tsx';
-import RankingDetails from './components/subject-page/subject-content/RankingDetails.tsx';
+import type { PropsWithChildren } from "react";
+import React from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { NavigationProp } from "@react-navigation/native";
+import RankingHeader from "./components/subject-page/header/RankingHeader.tsx";
+import RankingDetails from "./components/subject-page/subject-content/RankingDetails.tsx";
 
 type SectionProps = PropsWithChildren<{
   navigation: NavigationProp<any, any>;
 }>;
 
-function RankingScreen({navigation}: SectionProps): React.JSX.Element {
+function RankingScreen({ navigation }: SectionProps): React.JSX.Element {
   const navigateToHome = () => {
-    navigation.navigate('Home');
+    navigation.navigate("Home");
   };
   return (
     <View style={styles.container}>
@@ -27,8 +27,8 @@ function RankingScreen({navigation}: SectionProps): React.JSX.Element {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-  },
+    flex: 1
+  }
 });
 
 export default RankingScreen;

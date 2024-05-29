@@ -19,8 +19,10 @@ function LoginScreen({ navigation }: SectionProps): React.JSX.Element {
       .post("http://10.0.2.2:8000/api/auth/login/", { username, password })
       .then(response => {
         Alert.alert("Success", "Login successful");
-        updateUser({id: response.data.user_id, email: response.data.email,
-          username: response.data.username, token: response.data.token});
+        updateUser({
+          id: response.data.user_id, email: response.data.email,
+          username: response.data.username, token: response.data.token
+        });
         navigation.navigate("Home");
       })
       .catch(error => {

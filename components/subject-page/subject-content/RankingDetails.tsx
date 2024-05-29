@@ -13,7 +13,7 @@ function RankingDetails(): React.JSX.Element {
     axios
       .get('http://10.0.2.2:8000/api/custom-users/', {
         headers: {
-          Authorization: `token ${user.token}`,
+          Authorization: `token ${user?.token}`,
         },
       })
        .then((response) => {
@@ -23,8 +23,8 @@ function RankingDetails(): React.JSX.Element {
                 console.log(error);
          });
    }, []);
-   const sortedItems = ListRanking.sort((a, b) => {
-     return a.score !== b.score ? b.score - a.score : a.contribution - b.contribution;
+   const sortedItems = ListRanking.sort((a: any, b: any) => {
+     return a.rank !== b.rank ? b.rank - a.rank : a.contribution - b.contribution;
    });
   return (
     <View style={styles.container}>
@@ -32,7 +32,7 @@ function RankingDetails(): React.JSX.Element {
       <View>
         <Text />
       </View>
-      {ListRanking.map((item, index) => (
+      {ListRanking.map((item: any, index: any) => (
               <RankingIndex
                 key={index}
                 rank={(index + 1).toString()}

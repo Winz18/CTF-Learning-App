@@ -1,5 +1,5 @@
-import React, {PropsWithChildren} from 'react';
-import {StyleSheet, Text, View,SafeAreaView, TextInput, TouchableOpacity, Alert,useEffect} from 'react-native';
+import React, {PropsWithChildren, useEffect} from 'react';
+import {StyleSheet, Text, View,SafeAreaView, TextInput, TouchableOpacity, Alert} from 'react-native';
 import {NavigationProp} from '@react-navigation/native';
 import ModalDropdown from 'react-native-modal-dropdown';
 import axios from 'axios';
@@ -13,13 +13,12 @@ type SectionProps = PropsWithChildren<{
 function ModuleEditContent({navigation}: SectionProps): React.JSX.Element {
     let Types = ['Text', 'Image', 'Video',];
     const [type, setType] = React.useState<string | null>(null);
-    const handleSelect = (index, value) => {
+    const handleSelect = (index: any, value: any) => {
             setType(value);
     };
     return (
         <SafeAreaView>
         <View style={styles.container}>
-
               <ModalDropdown
                 options={Types}
                 style={styles.dropdown}

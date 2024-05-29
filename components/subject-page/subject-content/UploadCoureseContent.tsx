@@ -1,5 +1,5 @@
-import React, {PropsWithChildren} from 'react';
-import {StyleSheet, Text, View,SafeAreaView, TextInput, TouchableOpacity, Alert,useEffect} from 'react-native';
+import React, {PropsWithChildren, useEffect} from 'react';
+import {StyleSheet, Text, View,SafeAreaView, TextInput, TouchableOpacity, Alert} from 'react-native';
 import {NavigationProp} from '@react-navigation/native';
 import ModalDropdown from 'react-native-modal-dropdown';
 import axios from 'axios';
@@ -19,8 +19,8 @@ function UploadCourseContent(): React.JSX.Element {
     const [category, setCategory] = React.useState('');
     const {user} = useAuth();
     const [articles, setArticles] = React.useState([]);
-    const [author, setAuthor] = React.useState();
-    const handleSelect = (index, value) => {
+    const [author, setAuthor] = React.useState<number>();
+    const handleSelect = (index: any, value: any) => {
         setCategory(value);
       };
     React.useEffect(() => {

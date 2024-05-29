@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import React, { useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
 
 function CourseFooter(): React.JSX.Element {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -21,28 +21,28 @@ function CourseFooter(): React.JSX.Element {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    width: '100%',
+    flexDirection: "row",
+    width: "100%",
     height: 100,
-    backgroundColor: '#f5f5f7',
-    position: 'absolute',
+    backgroundColor: "#f5f5f7",
+    position: "absolute",
     bottom: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center"
   },
 
   imgWrapper: {
-    alignItems: 'center',
+    alignItems: "center",
     marginHorizontal: 15,
-    justifyContent: 'center',
+    justifyContent: "center"
   },
 
   text: {
     fontSize: 24,
-    color: 'green',
-    fontWeight: '700',
-    alignSelf: 'center',
-  },
+    color: "green",
+    fontWeight: "700",
+    alignSelf: "center"
+  }
 });
 
 export default CourseFooter;
