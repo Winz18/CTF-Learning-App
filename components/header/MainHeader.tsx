@@ -38,7 +38,7 @@ function MainHeader({ navigation }: SectionProps): React.JSX.Element {
 
   const handleUpload = () => {
     setModalVisible(false);
-    Linking.openURL('http://10.0.2.2:8000').catch(err => console.error("Couldn't load page", err));
+    Linking.openURL('http://10.0.2.2:8000').catch((err) => console.error('An error occurred', err));
   };
 
   return (
