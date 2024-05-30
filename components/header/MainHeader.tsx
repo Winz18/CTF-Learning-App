@@ -1,34 +1,30 @@
 import React, { type PropsWithChildren, useState } from "react";
-import { Alert, Image, Modal, StyleSheet, Text, TouchableOpacity, View, Linking } from "react-native";
+import { Alert, Image, Modal, StyleSheet, Text, TouchableOpacity, View, Linking, DevSettings } from "react-native";
 import { NavigationProp } from "@react-navigation/native";
-import axios from 'axios';
-import {useAuth} from '../../AuthProvider';
+import axios from "axios";
+import { useAuth } from "../../AuthProvider.tsx";
+
+
 type SectionProps = PropsWithChildren<{
   navigation: NavigationProp<any, any>;
 }>;
 
 function MainHeader({ navigation }: SectionProps): React.JSX.Element {
   const [modalVisible, setModalVisible] = useState(false);
-  const {user, signOut} = useAuth();
+  const {user} = useAuth()
 
-  // Xử lý logout ở đây
-  // Ví dụ: đăng xuất người dùng, xóa token, vv.
   const handleLogout = () => {
     setModalVisible(false);
-    console.log(`token ${user?.token}`);
-    axios.post('http://10.0.2.2:8000/api/auth/logout/', {},{
-        headers: {
-            Authorization: `Token ${user?.token}`,
-        },
-        })
-        .then((response) => {
-        console.log(response.data);
 
-        signOut();
-        }).catch((error) => {
-        console.log(error);
-        });
-    navigation.navigate("Login");
+    axios.defaults.headers.common["Authorization"] = "Token " + user?.token;
+    axios.post("http://10.0.2.2:8000/api/auth/logout/")
+      .then(() => {
+        Alert.alert("Success", "Logout successful");
+      })
+      .catch((error) => {
+        console.error("Failed to logout", error);
+      });
+    DevSettings.reload();
   };
 
   // Show help message

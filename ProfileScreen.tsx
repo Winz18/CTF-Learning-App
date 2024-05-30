@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Alert, StyleSheet, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Alert, Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useAuth } from "./AuthProvider";
 import axios from "axios";
 import { NavigationProp } from "@react-navigation/native";
@@ -10,28 +10,23 @@ type SectionProps = {
 };
 
 
-
 function ProfileScreen({ navigation }: SectionProps): React.JSX.Element {
   const { user, updateUser } = useAuth();
-  const [email, setEmail] = useState(user?.email || "");
+  const [email, setEmail] = useState( "");
   const [old_password, setPassword] = useState("");
   const [new_password, setNewPassword] = useState("");
-  const [userData, setUserData] = useState<{[key: string]: [string]}>({});
+  const [userData, setUserData] = useState<{ [key: string]: [string] }>({});
   const handleUpdateEmail = async () => {
     if (!user) {
       Alert.alert("Error", "User not found");
       return;
     }
     try {
-      await axios.put(
-        `http://10.0.2.2:8000/api/auth/update-email/`,
-        { email },
-        {
-          headers: {
-            Authorization: `token ${user.token}`
-         }
+      await axios.put(`http://10.0.2.2:8000/api/auth/update-email/`, { email }, {
+        headers: {
+          Authorization: `token ${user.token}`
         }
-      );
+      });
       updateUser({ ...user, email });
       Alert.alert("Success", "Email updated successfully");
     } catch (error) {
@@ -46,15 +41,11 @@ function ProfileScreen({ navigation }: SectionProps): React.JSX.Element {
       return;
     }
     try {
-      await axios.put(
-        `http://10.0.2.2:8000/api/auth/change-password`,
-        { old_password, new_password },
-        {
-          headers: {
-            Authorization: `token ${user.token}`
-          }
+      await axios.put(`http://10.0.2.2:8000/api/auth/change-password`, { old_password, new_password }, {
+        headers: {
+          Authorization: `token ${user.token}`
         }
-      );
+      });
       Alert.alert("Success", "Password updated successfully");
       setPassword("");
       setNewPassword("");
@@ -68,41 +59,41 @@ function ProfileScreen({ navigation }: SectionProps): React.JSX.Element {
     navigation.goBack();
   };
 
- useEffect(() => {
-    axios.get(`http://10.0.2.2:8000/api/custom-users/?username=${user.username}`, {
+  useEffect(() => {
+    axios.get(`http://10.0.2.2:8000/api/custom-users/?username=${user?.username}`, {
       headers: {
-        Authorization: `token ${user.token}`
+        Authorization: `token ${user?.token}`
       }
     })
-    .then((response) => {
-      const content: {[key: string]: [string]} = {};
-      response.data.forEach((item:any) => {
-        content['avatar'] = item.avatar;
+      .then((response) => {
+        const content: { [key: string]: [string] } = {};
+        response.data.forEach((item: any) => {
+          content["avatar"] = item.avatar;
+        });
+        setUserData(content);
+      })
+      .catch((error) => {
+        console.error(error);
       });
-      setUserData(content);
-      console.log(userData);
-      console.log(userData['avatar']);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-    }, []);
-  return (
-    <View style={styles.container}>
+  }, []);
+  return (<View style={styles.container}>
       <Appbar.Header>
-        <Appbar.BackAction onPress={goBack} />
-        <Appbar.Content title="Profile" />
+        <TouchableOpacity onPress={goBack}>
+          <Image style={styles.img} source={require("./components/subject-page/header/img/back.png")} />
+        </TouchableOpacity>
       </Appbar.Header>
       <Card style={styles.card}>
         <Card.Title
           title={user?.username}
           subtitle={user?.email}
-          left={(props) => <Avatar.Image size={24} source={userData['avatar'] ? { uri: userData.avatar } : require('./components/subject-page/subject-content/img/cup.png')} />}
+          left={() => <Avatar.Image size={45} source={userData["avatar"] ?
+            { uri: userData.avatar }
+            : require("./components/subject-page/subject-content/img/cup.png")} />}
         />
         <Card.Content>
-          <Title>Update Profile</Title>
+          <Title style={styles.title}>Update Profile</Title>
           <TextInput
-            label="Email"
+            label="New Email"
             value={email}
             onChangeText={setEmail}
             keyboardType="email-address"
@@ -131,8 +122,7 @@ function ProfileScreen({ navigation }: SectionProps): React.JSX.Element {
           </Button>
         </Card.Content>
       </Card>
-    </View>
-  );
+    </View>);
 }
 
 const styles = StyleSheet.create({
@@ -151,10 +141,16 @@ const styles = StyleSheet.create({
     marginVertical: 10
   },
   title: {
-    fontSize: 30,
-    marginBottom: 20,
-    fontWeight: "bold"
-  }
+    fontSize: 24,
+    marginBottom: 10,
+    fontWeight: "bold",
+    color: "purple"
+  },
+  img: {
+    marginTop: 5,
+    width: 20,
+    height: 20
+  },
 });
 
 export default ProfileScreen;

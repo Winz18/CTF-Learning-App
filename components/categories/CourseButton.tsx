@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { ImageBackground, StyleSheet, Text, TouchableOpacity } from "react-native";
 import axios from "axios";
 import { useAuth } from "../../AuthProvider.tsx";
+import { useFocusEffect } from "@react-navigation/native";
 
 type SectionProps = {
   title: string;
@@ -13,7 +14,7 @@ function CourseButton({ title, image, onPress }: SectionProps): React.JSX.Elemen
   const { user } = useAuth();
   const [articles, setArticles] = useState([]);
 
-  useEffect(() => {
+  const fetchArticles = useCallback(() => {
     axios
       .get("http://10.0.2.2:8000/api/articles/", {
         headers: {
@@ -28,7 +29,14 @@ function CourseButton({ title, image, onPress }: SectionProps): React.JSX.Elemen
       .catch((error) => {
         console.error("Failed to fetch course data", error);
       });
-  }, []);
+  }, [title, user?.token]);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchArticles();
+    }, [fetchArticles])
+  );
+
   return (
     <TouchableOpacity onPress={() => onPress(articles, title)}>
       <ImageBackground
@@ -42,7 +50,6 @@ function CourseButton({ title, image, onPress }: SectionProps): React.JSX.Elemen
       </ImageBackground>
     </TouchableOpacity>
   );
-
 }
 
 const styles = StyleSheet.create({

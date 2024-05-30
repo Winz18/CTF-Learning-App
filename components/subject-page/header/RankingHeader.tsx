@@ -15,7 +15,7 @@ function RankingHeader({ NewScr: Switching }: SectionProps): React.JSX.Element {
       {/* Nút back */}
       <View style={styles.navigationButton}>
         <TouchableOpacity onPress={Switching}>
-          <Image style={styles.img} source={require("./img/left-arrow.png")} />
+          <Image style={styles.img} source={require("./img/back.png")} />
         </TouchableOpacity>
       </View>
       <Text style={styles.TitleTxt}>Bảng Xếp Hạng</Text>
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
 
   img: {
     width: 20,
-    height: 20
+    height: 20,
   },
 
   navigationButton: {
