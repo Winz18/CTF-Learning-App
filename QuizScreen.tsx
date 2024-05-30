@@ -93,7 +93,7 @@ const QuizScreen = ({ navigation, route }: SectionProps) => {
         <TouchableOpacity onPress={backToDetail}>
           <Image
             style={styles.img}
-            source={require("./components/subject-page/header/img/left-arrow.png")}
+            source={require("./components/subject-page/header/img/back.png")}
           />
         </TouchableOpacity>
       </View>

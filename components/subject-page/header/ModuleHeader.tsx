@@ -24,10 +24,10 @@ function ModuleHeader({ goBack, goToTest, article }: SectionProps): React.JSX.El
     <ImageBackground
       style={styles.container}
       resizeMode="cover"
-      source={require("./img/OIP2.jpg")}>
+      source={require("./img/blog_graphic.jpg")}>
       <View style={styles.navigationButton}>
         <TouchableOpacity onPress={goBack}>
-          <Image style={styles.img} source={require("./img/left-arrow.png")} />
+          <Image style={styles.img} source={require("./img/back.png")} />
         </TouchableOpacity>
       </View>
       <Text style={styles.nameOfModuleTxt}>
@@ -35,7 +35,7 @@ function ModuleHeader({ goBack, goToTest, article }: SectionProps): React.JSX.El
       </Text>
       <Text>{"\n"}</Text>
       <View style={styles.navigationButton}>
-        <Text style={{ fontSize: 18, color: "gold"}}>{"\nBạn đã hiểu rõ ?"}</Text>
+        <Text style={{ fontSize: 18, color: "gold"}}>{"\n Bạn đã hiểu rõ ?"}</Text>
         <TouchableOpacity onPress={goToTest}>
           <Image style={styles.btnTest} source={require("./img/test.png")} />
         </TouchableOpacity>
@@ -73,10 +73,10 @@ const styles = StyleSheet.create({
 
   nameOfModuleTxt: {
     marginTop: 10,
-    marginLeft: 10,
-    fontSize: 25,
-    fontWeight: "900",
-    color: "lightgray"
+    marginLeft: 15,
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "gold"
   },
 
   btnTest: {

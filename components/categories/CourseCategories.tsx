@@ -1,8 +1,7 @@
-import React, { PropsWithChildren, useEffect, useState } from "react";
-import { DevSettings, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { PropsWithChildren } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import CourseButton from "./CourseButton.tsx";
 import { NavigationProp } from "@react-navigation/native";
-import axios from "axios";
 import { useAuth } from "../../AuthProvider.tsx";
 
 type SectionProps = PropsWithChildren<{
@@ -19,14 +18,12 @@ const images: { [key: string]: any } = {
 };
 
 function CourseCategories({ navigation }: SectionProps): React.JSX.Element {
-  const {user} = useAuth()
-
   const goToCourseScreen = (articles: any[], title: string) => {
     navigation.navigate("Course", { articles, title });
   };
 
   const refresh = () => {
-    DevSettings.reload();
+    navigation.navigate("Login");
   }
 
   return (
