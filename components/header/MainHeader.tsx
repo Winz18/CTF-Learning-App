@@ -4,6 +4,7 @@ import { NavigationProp } from "@react-navigation/native";
 import axios from "axios";
 import { useAuth } from "../../AuthProvider.tsx";
 
+
 type SectionProps = PropsWithChildren<{
   navigation: NavigationProp<any, any>;
 }>;
@@ -14,6 +15,7 @@ function MainHeader({ navigation }: SectionProps): React.JSX.Element {
 
   const handleLogout = () => {
     setModalVisible(false);
+
     axios.defaults.headers.common["Authorization"] = "Token " + user?.token;
     axios.post("http://10.0.2.2:8000/api/auth/logout/")
       .then(() => {
