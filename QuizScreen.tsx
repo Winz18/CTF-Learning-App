@@ -47,30 +47,35 @@ const QuizScreen = ({ navigation, route }: SectionProps) => {
       });
   }, [article.test, user?.token]);
 
-  const handleOptionPress = (optionId: number) => {
+  const handleOptionPress = async (optionId: number) => {
+    setSelectedOption(optionId);
     const currentQuestion = questions[currentQuestionIndex];
     const selectedAnswer = currentQuestion.answers.find(answer => answer.id === optionId);
-
-    if (selectedAnswer) {
-      setSelectedOption(optionId);
-      if (selectedAnswer.result) {
-        setScore(prevScore => prevScore + 1);
-      }
-
-      setTimeout(() => {
-        setSelectedOption(null);
-        if (currentQuestionIndex < questions.length - 1) {
-          setCurrentQuestionIndex(currentQuestionIndex + 1);
-        } else {
-          Alert.alert(
-            `Quiz Finished! Your score is: ${
-              score + (selectedAnswer.result ? 1 : 0)
-            }/${questions.length}`
-          );
-          backToDetail();
-        }
-      }, 1000);
+    if (selectedAnswer?.result) {
+      setScore(score + 1);
     }
+    setTimeout(async () => {
+      setSelectedOption(null);
+      if (currentQuestionIndex < questions.length - 1) {
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+      } else {
+        const finalScore = score + (selectedAnswer?.result ? 1 : 0);
+        try {
+          await axios.post(`http://10.0.2.2:8000/api/update_score/`, { score: finalScore }, {
+            headers: {
+              Authorization: `Token ${user?.token}`
+            }
+          });
+          Alert.alert(
+            `Quiz Finished! Your score is: ${finalScore}/${questions.length}`
+          );
+        } catch (error) {
+          console.error("Failed to update score", error);
+          Alert.alert("An error occurred while updating your score.");
+        }
+        backToDetail();
+      }
+    }, 1000);
   };
 
   const backToDetail = () => {

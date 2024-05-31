@@ -3,7 +3,7 @@ import { Alert, Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useAuth } from "./AuthProvider";
 import axios from "axios";
 import { NavigationProp } from "@react-navigation/native";
-import { Appbar, Avatar, Button, Card, Subheading, TextInput, Title } from "react-native-paper";
+import { Appbar, Button, Card, Subheading, TextInput, Title } from "react-native-paper";
 
 type SectionProps = {
   navigation: NavigationProp<any, any>;
@@ -12,7 +12,7 @@ type SectionProps = {
 
 function ProfileScreen({ navigation }: SectionProps): React.JSX.Element {
   const { user, updateUser } = useAuth();
-  const [email, setEmail] = useState( "");
+  const [email, setEmail] = useState("");
   const [old_password, setPassword] = useState("");
   const [new_password, setNewPassword] = useState("");
   const [userData, setUserData] = useState<{ [key: string]: [string] }>({});
@@ -77,52 +77,49 @@ function ProfileScreen({ navigation }: SectionProps): React.JSX.Element {
       });
   }, []);
   return (<View style={styles.container}>
-      <Appbar.Header>
-        <TouchableOpacity onPress={goBack}>
-          <Image style={styles.img} source={require("./components/subject-page/header/img/back.png")} />
-        </TouchableOpacity>
-      </Appbar.Header>
-      <Card style={styles.card}>
-        <Card.Title
-          title={user?.username}
-          subtitle={user?.email}
-          left={() => <Avatar.Image size={45} source={userData["avatar"] ?
-            { uri: userData.avatar }
-            : require("./components/subject-page/subject-content/img/cup.png")} />}
+    <Appbar.Header>
+      <TouchableOpacity onPress={goBack}>
+        <Image style={styles.img} source={require("./components/subject-page/header/img/back.png")} />
+      </TouchableOpacity>
+    </Appbar.Header>
+    <Card style={styles.card}>
+      <Card.Title
+        title={user?.username}
+        subtitle={user?.email}
+      />
+      <Card.Content>
+        <Title style={styles.title}>Update Profile</Title>
+        <TextInput
+          label="New Email"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          style={styles.input}
         />
-        <Card.Content>
-          <Title style={styles.title}>Update Profile</Title>
-          <TextInput
-            label="New Email"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            style={styles.input}
-          />
-          <Button mode="contained" onPress={handleUpdateEmail} style={styles.button}>
-            Update Email
-          </Button>
-          <Subheading>Change Password</Subheading>
-          <TextInput
-            label="Current Password"
-            value={old_password}
-            onChangeText={setPassword}
-            secureTextEntry
-            style={styles.input}
-          />
-          <TextInput
-            label="New Password"
-            value={new_password}
-            onChangeText={setNewPassword}
-            secureTextEntry
-            style={styles.input}
-          />
-          <Button mode="contained" onPress={handleChangePassword} style={styles.button}>
-            Change Password
-          </Button>
-        </Card.Content>
-      </Card>
-    </View>);
+        <Button mode="contained" onPress={handleUpdateEmail} style={styles.button}>
+          Update Email
+        </Button>
+        <Subheading>Change Password</Subheading>
+        <TextInput
+          label="Current Password"
+          value={old_password}
+          onChangeText={setPassword}
+          secureTextEntry
+          style={styles.input}
+        />
+        <TextInput
+          label="New Password"
+          value={new_password}
+          onChangeText={setNewPassword}
+          secureTextEntry
+          style={styles.input}
+        />
+        <Button mode="contained" onPress={handleChangePassword} style={styles.button}>
+          Change Password
+        </Button>
+      </Card.Content>
+    </Card>
+  </View>);
 }
 
 const styles = StyleSheet.create({
@@ -150,7 +147,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     width: 20,
     height: 20
-  },
+  }
 });
 
 export default ProfileScreen;
